@@ -11,9 +11,58 @@
 <t:defaultHead/>
 
 <t:adminBody sidebarItem="redirect">
+
     <jsp:attribute name="body">
         <h1 class="page-header">Redirect</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>URL</th>
+                <th><!-- derp --></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <c:url value="/admin/redirect/add" var="addUrl"/>
+                <form id="addForm" action="${addUrl}" method="post">
+                    <td>
+                        <input type="text" class="form-control" placeholder="http://www.example.com" name="url"/>
+                    </td>
+                    <td style="font-size: 24px">
+                        <span id="addButton" class="glyphicon glyphicon-plus-sign"><!-- derp--></span>
+                    </td>
+                </form>
+            </tr>
+            <c:forEach items="${redirectUrls}" var="redirect" varStatus="redirectStatus">
+                <tr>
+                    <td class="col-md-6">
+                        <a href="${redirect}" target="_blank"><c:out value="${redirect}"/></a>
+                    </td>
+                    <td style="font-size:24px">
+                        <c:url value="/admin/redirect/remove" var="removeUrl"/>
+                        <form id="removeForm_${redirectStatus.index}" action="${removeUrl}" method="post">
+                            <input type="hidden" name="url" value="${redirect}"/>
+                        </form>
+                        <span id="removeButton_${redirectStatus.index}" class="remove-button glyphicon glyphicon-remove-sign"><!-- derp --></span>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
     </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <script type="text/javascript">
+            $('#addButton').click(function() {
+                $('#addForm').submit();
+            });
+
+            $('.remove-button').click(function(e) {
+                $('#removeForm_' + e.target.id.substr(13)).submit();
+            })
+        </script>
+    </jsp:attribute>
+
 </t:adminBody>
 
 </html>

@@ -13,6 +13,49 @@
 <t:adminBody sidebarItem="dns">
     <jsp:attribute name="body">
         <h1 class="page-header">DNS</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <c:url value="/admin/dns-connectors" var="connectorsUrl"/>
+                <a class="pull-left" href="${connectorsUrl}">
+                    <p class="media-object">Pannel with connector shit? Glyph?</p>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h4 class="media-heading">Connectors</h4>
+                Connectors provide the link between the client and the DNS Engine. They receive incoming DNS requests,
+                normally via UDP, forward them to the engine, and send a response back to the client.
+            </div>
+        </div>
+        <div class="row media">
+            <div class="col-md-3">
+                <c:url value="/admin/dns-engine" var="engineUrl"/>
+                <a class="pull-left" href="${engineUrl}">
+                    <p class="media-object">derp</p>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h4 class="media-heading">Engine</h4>
+                The Engine is the nexus of all DNS resolving activity. It receives requests from the Connectors, parses
+                and validates them, communicates with the Resolver Chain to translate host names to IP addresses, etc.
+                In the event that an authoritative answer can not be found, it will propogate requests up the DNS
+                hierarchy, appropriate. Finally, it sends any reponse back to the Connector.
+            </div>
+        </div>
+        <div class="row media">
+            <div class="col-md-3">
+                <c:url value="/admin/dns-resolver-chain" var="resolverChainUrl"/>
+                <a class="pull-left" href="${resolverChainUrl}">
+                    <p class="media-object">Resolver Chain</p>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h4 class="media-heading">Resolver Chain</h4>
+                The Resolver Chain is a list of Resolver Rules, each of which has a Rule for determining validitiy and a
+                Resolver that answers a DNS question. When a question is sent to the chain, the list of rules is
+                traversed until a valid rule it found. The question is then sent to the resolver and, if possible, an
+                answer is returned.
+            </div>
+        </div>
     </jsp:attribute>
 </t:adminBody>
 

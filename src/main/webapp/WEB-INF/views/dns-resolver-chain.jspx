@@ -1,0 +1,19 @@
+<html xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:t="urn:jsptagdir:/WEB-INF/tags">
+
+<jsp:output doctype-root-element="html"
+            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+            doctype-system="http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+            omit-xml-declaration="true"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<t:defaultHead/>
+
+<t:adminBody sidebarItem="dns">
+    <jsp:attribute name="body">
+        <h1 class="page-header">DNS Resolver Chain</h1>
+    </jsp:attribute>
+</t:adminBody>
+
+</html>

@@ -25,6 +25,21 @@ public class AdminController {
         return "dns";
     }
 
+    @RequestMapping("/dns-connectors")
+    public String dnsConnectors() {
+        return "dns-connectors";
+    }
+
+    @RequestMapping("/dns-engine")
+    public String dnsEngine() {
+        return "dns-engine";
+    }
+
+    @RequestMapping("/dns-resolver-chain")
+    public String dnsResolverChain() {
+        return "dns-resolver-chain";
+    }
+
     @RequestMapping("/redirect")
     public String redirect() {
         return "redirect";

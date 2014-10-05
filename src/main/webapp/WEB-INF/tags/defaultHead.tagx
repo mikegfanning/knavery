@@ -1,0 +1,20 @@
+<head xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="headIncludes" fragment="true"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- derp --></meta>
+
+    <c:url value="/admin/resources/css/bootstrap.min.css" var="bsCssUrl"/>
+    <link href="${bsCssUrl}" rel="stylesheet"><!-- derp --></link>
+
+    <c:url value="/admin/resources/css/bootstrap-theme.min.css" var="bsThemeCssUrl"/>
+    <link href="${bsThemeCssUrl}" rel="stylesheet"><!-- derp --></link>
+
+    <c:url value="/admin/resources/css/dashboard.css" var="dashbaordCssUrl"/>
+    <link href="${dashbaordCssUrl}" rel="stylesheet"><!-- derp --></link>
+
+    <jsp:invoke fragment="headIncludes"/>
+
+    <title>Knavery Admin</title>
+</head>

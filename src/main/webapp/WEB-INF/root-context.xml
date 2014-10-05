@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- DNS Server Config -->
+
+    <bean id="dnsServer" class="org.code_revue.dns.server.DnsServer">
+        <property name="connectors">
+            <list>
+                <bean id="dnsConnector" class="org.code_revue.dns.server.connector.DatagramConnector">
+                    <property name="port" value="53"/>
+                </bean>
+            </list>
+        </property>
+        <property name="engine" ref="dnsEngine"/>
+    </bean>
+
+    <bean id="dnsEngine" class="org.code_revue.dns.server.engine.StandardEngine">
+        <constructor-arg value="208.67.222.222"/>
+        <property name="resolverChain" ref="resolverChain"/>
+    </bean>
+
+    <bean id="dnsResolver" class="org.code_revue.dns.server.resolver.LocalhostResolver">
+        <property name="exceptionList">
+            <list>
+                <value>ytmnd.com</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="resolverChain" class="org.code_revue.dns.server.engine.ResolverChain">
+        <property name="resolverRules">
+            <list>
+                <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
+                    <constructor-arg value=".*192\\.168.*"/>
+                    <constructor-arg ref="dnsResolver"/>
+                </bean>
+                <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
+                    <constructor-arg value=".*127\.0\.0\.1.*"/>
+                    <constructor-arg ref="dnsResolver"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!-- DHCP Server Config -->
+
+    <bean id="dhcpServer" class="org.code_revue.dhcp.server.DhcpServer">
+        <property name="engine" ref="dhcpEngine"/>
+        <property name="port" value="67"/>
+    </bean>
+
+    <bean id="dhcpEngine" class="org.code_revue.dhcp.server.StandardEngine">
+        <property name="addressPool" ref="dhcpAddressPool"/>
+    </bean>
+
+    <bean id="dhcpAddressPool" class="org.code_revue.dhcp.server.StandardIp4AddressPool">
+        <constructor-arg value="192.168.1.120"/>
+        <constructor-arg value="192.168.1.220"/>
+    </bean>
+
+    <util:list id="redirectUrls">
+        <value>http://hippohippo.ytmnd.com/</value>
+        <value>http://picard.ytmnd.com/</value>
+        <value>http://momspaghetti.ytmnd.com/</value>
+        <value>http://bogie-nights.ytmnd.com/</value>
+        <value>http://rickastleypwns.ytmnd.com/</value>
+    </util:list>
+
+</beans>

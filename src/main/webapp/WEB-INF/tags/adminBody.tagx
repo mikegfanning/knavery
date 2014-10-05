@@ -1,0 +1,63 @@
+<body xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:t="urn:jsptagdir:/WEB-INF/tags">
+
+<jsp:directive.attribute name="body" fragment="true" required="true"/>
+<jsp:directive.attribute name="jsInclude" fragment="true"/>
+<jsp:directive.attribute name="sidebarItem" required="true"/>
+
+<t:defaultBody>
+
+    <jsp:attribute name="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <c:url value="/admin/" var="iconUrl"/>
+                <a class="navbar-brand" href="${iconUrl}">Knavery</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search..."/>
+                </form>
+            </div>
+        </div>
+    </jsp:attribute>
+
+    <jsp:attribute name="sidebar">
+
+        <c:url value="/admin/" var="overviewUrl"/>
+        <li class="${'overview' eq sidebarItem ? 'active' : ''}"><a href="${overviewUrl}">Overview</a></li>
+
+        <c:url value="/admin/dhcp" var="dhcpUrl"/>
+        <li class="${'dhcp' eq sidebarItem ? 'active' : ''}"><a href="${dhcpUrl}">DHCP</a></li>
+
+        <c:url value="/admin/dns" var="dnsUrl"/>
+        <li class="${'dns' eq sidebarItem ? 'active' : ''}"><a href="${dnsUrl}">DNS</a></li>
+
+        <c:url value="/admin/redirect" var="redirectUrl"/>
+        <li class="${'redirect' eq sidebarItem ? 'active' : ''}"><a href="${redirectUrl}">Redirect</a></li>
+
+    </jsp:attribute>
+
+    <jsp:attribute name="body">
+        <jsp:invoke fragment="body"/>
+    </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <jsp:invoke fragment="jsInclude"/>
+    </jsp:attribute>
+
+</t:defaultBody>
+
+</body>

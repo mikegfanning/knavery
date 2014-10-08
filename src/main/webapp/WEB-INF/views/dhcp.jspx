@@ -13,6 +13,35 @@
 <t:adminBody sidebarItem="dhcp">
     <jsp:attribute name="body">
         <h1 class="page-header">DHCP</h1>
+        <div class="row media">
+            <div class="col-md-3">
+                <c:url value="/admin/dhcp-address-pool" var="addressPoolUrl"/>
+                <a class="pull-left" href="${addressPoolUrl}">
+                    <p class="media-object">Icon? Image?</p>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h4 class="media-heading">Address Pool</h4>
+                The address pool maintains a set of available IP addresses that can be assigned to devices that are
+                configured via DHCP. A range of addresses is defined by a beginning and ending address, and exclusions
+                can be added to prevent specific addresses from being assigned by the pool.
+            </div>
+        </div>
+        <div class="row media">
+            <div class="col-md-3">
+                <c:url value="/admin/dhcp-engine" var="engineUrl"/>
+                <a class="pull-left" href="${engineUrl}">
+                    <p class="media-object">Icon? Image?</p>
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h4 class="media-heading">Engine</h4>
+                The DHCP Engine maintains a list of attached network devices, standard configuration values and an
+                Address Pool. When requests are sent to the DHCP server they are sent to the engine for processing. The
+                engine will validate the message and handle it, based on message type, responding with configuration
+                information as appropriate.
+            </div>
+        </div>
     </jsp:attribute>
 </t:adminBody>
 

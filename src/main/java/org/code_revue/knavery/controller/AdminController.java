@@ -30,6 +30,16 @@ public class AdminController {
         return "dhcp";
     }
 
+    @RequestMapping("/dhcp-address-pool")
+    public String dhcpAddressPool() {
+        return "dhcp-address-pool";
+    }
+
+    @RequestMapping("/dhcp-engine")
+    public String dhcpEngine() {
+        return "dhcp-engine";
+    }
+
     @RequestMapping("/dns")
     public String dns() {
         return "dns";
@@ -58,7 +68,7 @@ public class AdminController {
 
     @RequestMapping(value = "/redirect/add", method = RequestMethod.POST)
     public String addRedirect(@RequestParam String url, Model model) {
-        // TODO: Validate this URL dumbshit
+        // TODO: Validate this URL
         redirectUrls.add(url);
         return redirect(model);
     }

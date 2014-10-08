@@ -13,11 +13,11 @@
 <t:adminBody sidebarItem="dns">
     <jsp:attribute name="body">
         <h1 class="page-header">DNS</h1>
-        <div class="row">
+        <div class="row media">
             <div class="col-md-3">
                 <c:url value="/admin/dns-connectors" var="connectorsUrl"/>
                 <a class="pull-left" href="${connectorsUrl}">
-                    <p class="media-object">Pannel with connector shit? Glyph?</p>
+                    <p class="media-object">Pannel with connector stuff? Glyph?</p>
                 </a>
             </div>
             <div class="col-md-9">

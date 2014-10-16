@@ -11,9 +11,74 @@
 <t:defaultHead/>
 
 <t:adminBody sidebarItem="dhcp">
+
     <jsp:attribute name="body">
         <h1 class="page-header">DHCP Address Pool</h1>
+
+        <h3>Range</h3>
+        <c:url value="/admin/dhcp-address-pool/update" var="updateUrl"/>
+        <form class="form-inline" role="form" action="${updateUrl}" method="post">
+        <div class="row">
+            <div class="col-md-2">Start</div>
+            <div class="col-md-4">
+                <c:set value="${addressPool.start}" var="start"/>
+                <t:ip4Address address="${start}" idPrefix="start" name="start" className="form-control"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">End</div>
+            <div class="col-md-4">
+                <c:set value="${addressPool.end}" var="end"/>
+                <t:ip4Address address="${end}" idPrefix="end" name="end" className="form-control"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <button type="submit" class="btn btn-default">Update</button>
+        </div>
+        </form>
+
+        <h3>Exclusions</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <c:url value="/admin/dhcp-address-pool/exclusion/add" var="addUrl"/>
+                <form id="addForm" class="form-inline" role="form" action="${addUrl}" method="post">
+                    <div class="form-group">
+                        <t:ip4Address idPrefix="exclusion" name="exclusion" className="form-control"/>
+                    </div>
+                    <span id="addButton" class="glyphicon glyphicon-plus-sign" style="font-size: 24px"><!-- d --></span>
+                </form>
+            </div>
+        </div>
+        <c:forEach items="${addressPool.exclusions}" var="exclusion" varStatus="status">
+            <div class="row">
+                <c:url value="/admin/dhcp-address-pool/exclusion/remove" var="removeUrl"/>
+                <c:forEach items="${exclusion}" var="b" varStatus="s">
+                    <c:if test="${s.index ne 0}">.</c:if>${b}
+                </c:forEach>
+                <form id="removeForm_${status.index}" action="${removeUrl}" method="post">
+                    <c:forEach items="${exclusion}" var="b" varStatus="s">
+                        <input type="hidden" name="exclusion" value="${b}"/>
+                    </c:forEach>
+                </form>
+                <span id="removeButton_${status.index}" class="remove-button glyphicon glyphicon-remove-sign"><!-- derp --></span>
+            </div>
+        </c:forEach>
     </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <script type="text/javascript">
+            $('#addButton').click(function() {
+                $('#addForm').submit();
+            });
+
+            $('.remove-button').click(function(e) {
+                $('#removeForm_' + e.target.id.substr(13)).submit();
+            })
+        </script>
+    </jsp:attribute>
+
 </t:adminBody>
 
 </html>

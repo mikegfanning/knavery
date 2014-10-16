@@ -1,5 +1,7 @@
 package org.code_revue.knavery.controller;
 
+import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,9 @@ public class AdminController {
     @Resource(name = "redirectUrls")
     private List<String> redirectUrls;
 
+    @Autowired
+    private StandardIp4AddressPool dhcpAddressPool;
+
     @RequestMapping("/")
     public String overview() {
         return "overview";
@@ -31,8 +36,27 @@ public class AdminController {
     }
 
     @RequestMapping("/dhcp-address-pool")
-    public String dhcpAddressPool() {
+    public String dhcpAddressPool(Model model) {
+        model.addAttribute("addressPool", dhcpAddressPool);
         return "dhcp-address-pool";
+    }
+
+    @RequestMapping(value = "/dhcp-address-pool/exclusion/add", method = RequestMethod.POST)
+    public String dhcpAddressPoolExclusionAdd(@RequestParam byte[] exclusion, Model model) {
+        dhcpAddressPool.addExclusion(exclusion);
+        return dhcpAddressPool(model);
+    }
+
+    @RequestMapping(value = "/dhcp-address-pool/exclusion/remove", method = RequestMethod.POST)
+    public String dhcpAddressPoolExclusionRemove(@RequestParam byte[] exclusion, Model model) {
+        dhcpAddressPool.removeExclusion(exclusion);
+        return dhcpAddressPool(model);
+    }
+
+    @RequestMapping(value = "/dhcp-address-pool/update", method = RequestMethod.POST)
+    public String dhcpAddressPoolUpdate(@RequestParam byte[] start, @RequestParam byte[] end, Model model) {
+        // TODO: Update start and end address - need to update DHCP library
+        return dhcpAddressPool(model);
     }
 
     @RequestMapping("/dhcp-engine")

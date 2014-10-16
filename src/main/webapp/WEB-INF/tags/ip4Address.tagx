@@ -1,0 +1,27 @@
+<span xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <!-- The "address" attribute should really be a byte[] -->
+    <jsp:directive.attribute name="address" type="java.lang.Object"/>
+    <jsp:directive.attribute name="idPrefix" required="true"/>
+    <jsp:directive.attribute name="name" required="true"/>
+    <jsp:directive.attribute name="className"/>
+
+    <c:choose>
+        <c:when test="${address ne null}">
+            <c:forEach items="${address}" var="segment" varStatus="status">
+                <c:if test="${status.index ne 0}">.</c:if>
+                <input id="${idPrefix}_${status.index}" name="${name}" class="${className}" type="text"
+                       value="${address[status.index]}" maxlength="3" size="3"/>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <c:forEach begin="0" end="3" varStatus="status">
+                <c:if test="${status.index ne 0}">.</c:if>
+                <input id="${idPrefix}_${status.index}" name="${name}" class="${className}" type="text" maxlength="3"
+                       size="3"/>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+
+</span>

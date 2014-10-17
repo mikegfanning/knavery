@@ -1,0 +1,68 @@
+<html xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:t="urn:jsptagdir:/WEB-INF/tags">
+
+<jsp:output doctype-root-element="html"
+            doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
+            doctype-system="http://www.w3c.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+            omit-xml-declaration="true"/>
+<jsp:directive.page contentType="text/html;charset=UTF-8"/>
+
+<t:defaultHead/>
+
+<t:adminBody sidebarItem="logging">
+
+    <jsp:attribute name="body">
+        <h1 class="page-header">Logging</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${loggers}" var="logger" varStatus="loggerStatus">
+                        <c:if test="${not empty logger.level}">
+                            <tr>
+                                <td><c:out value="${logger.name}"/></td>
+                                <td>
+                                    <c:url value="/admin/logging/level" var="logUrl"/>
+                                    <form id="bleh${loggerStatus.index}" action="${logUrl}" method="post">
+                                        <input type="hidden" name="logger" value="${logger.name}"/>
+                                        <select class="form-control level-select" name="level">
+                                            <c:forEach items="${levels}" var="level" varStatus="levelStatus">
+                                                <c:choose>
+                                                    <c:when test="${level eq logger.level}">
+                                                        <option selected="selected"><c:out value="${level}"/></option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option><c:out value="${level}"/></option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <script type="text/javascript">
+            $('.level-select').change(function(e) {
+                $(e.target).parent('form').submit()
+            })
+        </script>
+    </jsp:attribute>
+
+</t:adminBody>
+
+</html>

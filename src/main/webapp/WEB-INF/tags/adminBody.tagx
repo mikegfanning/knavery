@@ -48,6 +48,9 @@
         <c:url value="/admin/redirect" var="redirectUrl"/>
         <li class="${'redirect' eq sidebarItem ? 'active' : ''}"><a href="${redirectUrl}">Redirect</a></li>
 
+        <c:url value="/admin/logging/" var="loggingUrl"/>
+        <li class="${'logging' eq sidebarItem ? 'active' : ''}"><a href="${loggingUrl}">Logging</a></li>
+
     </jsp:attribute>
 
     <jsp:attribute name="body">

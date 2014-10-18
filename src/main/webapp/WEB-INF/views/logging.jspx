@@ -62,8 +62,7 @@
                         </select>
                     </td>
                     <td>
-                        <span id="add-button" class="glyphicon glyphicon-plus-sign"
-                              style="font-size: 24px; padding-top: 0.12em"/>
+                        <span id="add-button" class="add-button glyphicon glyphicon-plus-sign"/>
                     </td>
                 </tr>
                 </tbody>

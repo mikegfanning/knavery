@@ -18,18 +18,18 @@
             <thead>
             <tr>
                 <th>URL</th>
-                <th><!-- derp --></th>
+                <th/>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <c:url value="/admin/redirect/add" var="addUrl"/>
-                <form id="addForm" action="${addUrl}" method="post">
+                <form id="add-form" action="${addUrl}" method="post">
                     <td>
                         <input type="text" class="form-control" placeholder="http://www.example.com" name="url"/>
                     </td>
-                    <td style="font-size: 24px">
-                        <span id="addButton" class="glyphicon glyphicon-plus-sign"><!-- derp--></span>
+                    <td>
+                        <span id="add-button" class="add-button glyphicon glyphicon-plus-sign"/>
                     </td>
                 </form>
             </tr>
@@ -38,12 +38,12 @@
                     <td class="col-md-6">
                         <a href="${redirect}" target="_blank"><c:out value="${redirect}"/></a>
                     </td>
-                    <td style="font-size:24px">
+                    <td>
                         <c:url value="/admin/redirect/remove" var="removeUrl"/>
-                        <form id="removeForm_${redirectStatus.index}" action="${removeUrl}" method="post">
+                        <form id="remove-form-${redirectStatus.index}" action="${removeUrl}" method="post">
                             <input type="hidden" name="url" value="${redirect}"/>
                         </form>
-                        <span id="removeButton_${redirectStatus.index}" class="remove-button glyphicon glyphicon-remove-sign"><!-- derp --></span>
+                        <span id="remove-button-${redirectStatus.index}" class="remove-button glyphicon glyphicon-remove-sign"/>
                     </td>
                 </tr>
             </c:forEach>
@@ -53,12 +53,12 @@
 
     <jsp:attribute name="jsInclude">
         <script type="text/javascript">
-            $('#addButton').click(function() {
-                $('#addForm').submit();
+            $('#add-button').click(function() {
+                $('#add-form').submit();
             });
 
             $('.remove-button').click(function(e) {
-                $('#removeForm_' + e.target.id.substr(13)).submit();
+                $('#remove-form-' + e.target.id.substr(13)).submit();
             })
         </script>
     </jsp:attribute>

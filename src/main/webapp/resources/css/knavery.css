@@ -1,0 +1,7 @@
+.add-button {
+    padding-top: 0.12em
+}
+
+.add-button, .remove-button {
+    font-size:24px;
+}

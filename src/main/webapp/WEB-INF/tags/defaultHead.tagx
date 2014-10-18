@@ -11,6 +11,9 @@
     <c:url value="/admin/resources/css/bootstrap-theme.min.css" var="bsThemeCssUrl"/>
     <link href="${bsThemeCssUrl}" rel="stylesheet"><!-- derp --></link>
 
+    <c:url value="/admin/resources/css/knavery.css" var="knaveryCssUrl"/>
+    <link href="${knaveryCssUrl}" rel="stylesheet"><!-- derp --></link>
+
     <c:url value="/admin/resources/css/dashboard.css" var="dashbaordCssUrl"/>
     <link href="${dashbaordCssUrl}" rel="stylesheet"><!-- derp --></link>
 

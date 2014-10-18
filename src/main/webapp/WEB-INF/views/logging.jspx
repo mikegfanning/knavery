@@ -15,50 +15,72 @@
     <jsp:attribute name="body">
         <h1 class="page-header">Logging</h1>
         <div class="row">
-            <div class="col-md-12">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Level</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${loggers}" var="logger" varStatus="loggerStatus">
-                        <c:if test="${not empty logger.level}">
-                            <tr>
-                                <td><c:out value="${logger.name}"/></td>
-                                <td>
-                                    <c:url value="/admin/logging/level" var="logUrl"/>
-                                    <form id="bleh${loggerStatus.index}" action="${logUrl}" method="post">
-                                        <input type="hidden" name="logger" value="${logger.name}"/>
-                                        <select class="form-control level-select" name="level">
-                                            <c:forEach items="${levels}" var="level" varStatus="levelStatus">
-                                                <c:choose>
-                                                    <c:when test="${level eq logger.level}">
-                                                        <option selected="selected"><c:out value="${level}"/></option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <option><c:out value="${level}"/></option>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </select>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:if>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Logger</th>
+                    <th>Level</th>
+                    <th/>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${loggers}" var="logger" varStatus="loggerStatus">
+                    <c:if test="${not empty logger.level}">
+                        <tr>
+                            <td><c:out value="${logger.name}"/></td>
+                            <td>
+                                <c:url value="/admin/logging/level" var="logUrl"/>
+                                <form action="${logUrl}" method="post">
+                                    <input type="hidden" name="logger" value="${logger.name}"/>
+                                    <select class="form-control update-level" name="level">
+                                        <c:forEach items="${levels}" var="level" varStatus="levelStatus">
+                                            <c:choose>
+                                                <c:when test="${level eq logger.level}">
+                                                    <option selected="selected"><c:out value="${level}"/></option>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <option><c:out value="${level}"/></option>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </select>
+                                </form>
+                            </td>
+                            <td/>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+                <tr>
+                    <td>
+                        <input id="add-logger" class="form-control" type="text" name="logger" placeholder="Logger"/>
+                    </td>
+                    <td>
+                        <select id="add-level" class="form-control" name="level">
+                            <c:forEach items="${levels}" var="level" varStatus="levelStatus">
+                                <option><c:out value="${level}"/></option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td>
+                        <span id="add-button" class="glyphicon glyphicon-plus-sign"
+                              style="font-size: 24px; padding-top: 0.12em"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </jsp:attribute>
 
     <jsp:attribute name="jsInclude">
         <script type="text/javascript">
-            $('.level-select').change(function(e) {
-                $(e.target).parent('form').submit()
+            $('#add-button').click(function(e) {
+                var logger = $('#add-logger').val()
+                var level = $('#add-level').val()
+                $.post('/admin/logging/level', { logger: logger, level: level}, function() { location.reload() })
+            })
+
+            $('.update-level').change(function(e) {
+                $.post('/admin/logging/level', $(e.target).parent('form').serialize())
             })
         </script>
     </jsp:attribute>

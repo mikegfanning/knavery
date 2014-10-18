@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Random;
 
@@ -22,9 +23,9 @@ public class RedirectController {
     private List<String> redirectUrls;
 
     @RequestMapping("/*")
-    public String redirect() {
+    public String redirect(HttpServletRequest request) {
         String url = redirectUrls.get(random.nextInt(redirectUrls.size()));
-        logger.debug("Redirecting sucker to {}", url);
+        logger.debug("Redirecting sucker on IP {} to {}", request.getRemoteAddr(), url);
         return "redirect:" + url;
     }
 

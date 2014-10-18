@@ -1,6 +1,8 @@
 package org.code_revue.knavery.controller;
 
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Resource(name = "redirectUrls")
     private List<String> redirectUrls;
@@ -43,12 +47,14 @@ public class AdminController {
 
     @RequestMapping(value = "/dhcp-address-pool/exclusion/add", method = RequestMethod.POST)
     public String dhcpAddressPoolExclusionAdd(@RequestParam byte[] exclusion, Model model) {
+        logger.debug("Adding DHCP address pool exclusion {}", exclusion);
         dhcpAddressPool.addExclusion(exclusion);
         return dhcpAddressPool(model);
     }
 
     @RequestMapping(value = "/dhcp-address-pool/exclusion/remove", method = RequestMethod.POST)
     public String dhcpAddressPoolExclusionRemove(@RequestParam byte[] exclusion, Model model) {
+        logger.debug("Removing DHCP address pool exclusion {}", exclusion);
         dhcpAddressPool.removeExclusion(exclusion);
         return dhcpAddressPool(model);
     }
@@ -93,12 +99,14 @@ public class AdminController {
     @RequestMapping(value = "/redirect/add", method = RequestMethod.POST)
     public String addRedirect(@RequestParam String url, Model model) {
         // TODO: Validate this URL
+        logger.debug("Adding redirect URL {}", url);
         redirectUrls.add(url);
         return redirect(model);
     }
 
     @RequestMapping(value = "/redirect/remove", method = RequestMethod.POST)
     public String removeRedirect(@RequestParam String url, Model model) {
+        logger.debug("Removing redirect URL {}", url);
         redirectUrls.remove(url);
         return redirect(model);
     }

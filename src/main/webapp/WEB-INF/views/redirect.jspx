@@ -58,7 +58,7 @@
             });
 
             $('.remove-button').click(function(e) {
-                $('#remove-form-' + e.target.id.substr(13)).submit();
+                $('#remove-form-' + e.target.id.substr(14)).submit();
             })
         </script>
     </jsp:attribute>

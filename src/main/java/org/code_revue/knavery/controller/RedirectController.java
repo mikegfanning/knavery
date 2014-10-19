@@ -25,7 +25,8 @@ public class RedirectController {
     @RequestMapping("/*")
     public String redirect(HttpServletRequest request) {
         String url = redirectUrls.get(random.nextInt(redirectUrls.size()));
-        logger.debug("Redirecting sucker on IP {} to {}", request.getRemoteAddr(), url);
+        logger.debug("Redirecting sucker on IP {} from {} to {}", request.getRemoteAddr(), request.getRequestURI(),
+                url);
         return "redirect:" + url;
     }
 

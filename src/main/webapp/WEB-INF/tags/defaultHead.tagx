@@ -5,6 +5,25 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- derp --></meta>
 
+    <c:url value="/admin/resources/images" var="iconUrlBase"/>
+    <!-- Thanks to http://realfavicongenerator.net/ for generating this stuff -->
+    <link rel="apple-touch-icon" sizes="57x57" href="${iconUrlBase}/apple-touch-icon-57x57.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="114x114" href="${iconUrlBase}/apple-touch-icon-114x114.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="72x72" href="${iconUrlBase}/apple-touch-icon-72x72.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="144x144" href="${iconUrlBase}/apple-touch-icon-144x144.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="60x60" href="${iconUrlBase}/apple-touch-icon-60x60.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="120x120" href="${iconUrlBase}/apple-touch-icon-120x120.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="76x76" href="${iconUrlBase}/apple-touch-icon-76x76.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="152x152" href="${iconUrlBase}/apple-touch-icon-152x152.png"><!-- derp --></link>
+    <link rel="apple-touch-icon" sizes="180x180" href="${iconUrlBase}/apple-touch-icon-180x180.png"><!-- derp --></link>
+    <link rel="icon" type="image/png" href="${iconUrlBase}/favicon-192x192.png" sizes="192x192"><!-- derp --></link>
+    <link rel="icon" type="image/png" href="${iconUrlBase}/favicon-160x160.png" sizes="160x160"><!-- derp --></link>
+    <link rel="icon" type="image/png" href="${iconUrlBase}/favicon-96x96.png" sizes="96x96"><!-- derp --></link>
+    <link rel="icon" type="image/png" href="${iconUrlBase}/favicon-16x16.png" sizes="16x16"><!-- derp --></link>
+    <link rel="icon" type="image/png" href="${iconUrlBase}/favicon-32x32.png" sizes="32x32"><!-- derp --></link>
+    <meta name="msapplication-TileColor" content="#f5f5f5"><!-- derp --></meta>
+    <meta name="msapplication-TileImage" content="${iconUrlBase}/mstile-144x144.png"><!-- derp --></meta>
+
     <c:url value="/admin/resources/css/bootstrap.min.css" var="bsCssUrl"/>
     <link href="${bsCssUrl}" rel="stylesheet"><!-- derp --></link>
 

@@ -15,7 +15,7 @@
         <h1 class="page-header">DNS</h1>
         <div class="row media">
             <div class="col-md-3">
-                <c:url value="/admin/dns-connectors" var="connectorsUrl"/>
+                <c:url value="/admin/dns/connectors" var="connectorsUrl"/>
                 <a class="pull-left" href="${connectorsUrl}">
                     <p class="media-object">Pannel with connector stuff? Glyph?</p>
                 </a>
@@ -28,7 +28,7 @@
         </div>
         <div class="row media">
             <div class="col-md-3">
-                <c:url value="/admin/dns-engine" var="engineUrl"/>
+                <c:url value="/admin/dns/engine" var="engineUrl"/>
                 <a class="pull-left" href="${engineUrl}">
                     <p class="media-object">derp</p>
                 </a>
@@ -43,7 +43,7 @@
         </div>
         <div class="row media">
             <div class="col-md-3">
-                <c:url value="/admin/dns-resolver-chain" var="resolverChainUrl"/>
+                <c:url value="/admin/dns/resolver-chain" var="resolverChainUrl"/>
                 <a class="pull-left" href="${resolverChainUrl}">
                     <p class="media-object">Resolver Chain</p>
                 </a>

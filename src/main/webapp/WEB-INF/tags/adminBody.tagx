@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <c:url value="/admin/" var="iconUrl"/>
+                <c:url value="/admin" var="iconUrl"/>
                 <a class="navbar-brand" href="${iconUrl}">Knavery</a>
             </div>
             <div class="navbar-collapse collapse">
@@ -36,7 +36,7 @@
 
     <jsp:attribute name="sidebar">
 
-        <c:url value="/admin/" var="overviewUrl"/>
+        <c:url value="/admin" var="overviewUrl"/>
         <li class="${'overview' eq sidebarItem ? 'active' : ''}"><a href="${overviewUrl}">Overview</a></li>
 
         <c:url value="/admin/dhcp" var="dhcpUrl"/>
@@ -48,7 +48,7 @@
         <c:url value="/admin/redirect" var="redirectUrl"/>
         <li class="${'redirect' eq sidebarItem ? 'active' : ''}"><a href="${redirectUrl}">Redirect</a></li>
 
-        <c:url value="/admin/logging/" var="loggingUrl"/>
+        <c:url value="/admin/logging" var="loggingUrl"/>
         <li class="${'logging' eq sidebarItem ? 'active' : ''}"><a href="${loggingUrl}">Logging</a></li>
 
     </jsp:attribute>

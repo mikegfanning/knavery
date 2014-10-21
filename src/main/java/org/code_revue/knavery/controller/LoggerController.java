@@ -29,7 +29,7 @@ public class LoggerController {
     public static final Level[] LEVELS = new Level[]
             { Level.OFF, Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.TRACE, Level.ALL };
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String home(Model model) {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         model.addAttribute("loggers", context.getLoggerList());

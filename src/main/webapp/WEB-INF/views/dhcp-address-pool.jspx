@@ -16,7 +16,7 @@
         <h1 class="page-header">DHCP Address Pool</h1>
 
         <h3>Range</h3>
-        <c:url value="/admin/dhcp-address-pool/update" var="updateUrl"/>
+        <c:url value="/admin/dhcp/address-pool/update" var="updateUrl"/>
         <form class="form-inline" role="form" action="${updateUrl}" method="post">
         <div class="row">
             <div class="col-md-2">Start</div>
@@ -42,7 +42,7 @@
         <h3>Exclusions</h3>
         <div class="row">
             <div class="col-md-4">
-                <c:url value="/admin/dhcp-address-pool/exclusion/add" var="addUrl"/>
+                <c:url value="/admin/dhcp/address-pool/exclusion/add" var="addUrl"/>
                 <form id="addForm" class="form-inline" role="form" action="${addUrl}" method="post">
                     <div class="form-group">
                         <t:ip4Address idPrefix="exclusion" name="exclusion" className="form-control"/>
@@ -53,7 +53,7 @@
         </div>
         <c:forEach items="${addressPool.exclusions}" var="exclusion" varStatus="status">
             <div class="row">
-                <c:url value="/admin/dhcp-address-pool/exclusion/remove" var="removeUrl"/>
+                <c:url value="/admin/dhcp/address-pool/exclusion/remove" var="removeUrl"/>
                 <c:forEach items="${exclusion}" var="b" varStatus="s">
                     <c:if test="${s.index ne 0}">.</c:if>${b}
                 </c:forEach>

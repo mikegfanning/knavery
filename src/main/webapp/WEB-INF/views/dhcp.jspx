@@ -15,7 +15,7 @@
         <h1 class="page-header">DHCP</h1>
         <div class="row media">
             <div class="col-md-3">
-                <c:url value="/admin/dhcp-address-pool" var="addressPoolUrl"/>
+                <c:url value="/admin/dhcp/address-pool" var="addressPoolUrl"/>
                 <a class="pull-left" href="${addressPoolUrl}">
                     <p class="media-object">Icon? Image?</p>
                 </a>
@@ -29,7 +29,7 @@
         </div>
         <div class="row media">
             <div class="col-md-3">
-                <c:url value="/admin/dhcp-engine" var="engineUrl"/>
+                <c:url value="/admin/dhcp/engine" var="engineUrl"/>
                 <a class="pull-left" href="${engineUrl}">
                     <p class="media-object">Icon? Image?</p>
                 </a>

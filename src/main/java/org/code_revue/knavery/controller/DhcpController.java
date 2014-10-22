@@ -1,5 +1,7 @@
 package org.code_revue.knavery.controller;
 
+import org.code_revue.dhcp.server.DhcpEngine;
+import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.IOException;
+import java.util.concurrent.Executor;
 
 /**
  * @author Mike Fanning
@@ -20,7 +27,32 @@ public class DhcpController {
     private static final Logger logger = LoggerFactory.getLogger(DhcpController.class);
 
     @Autowired
+    private DhcpServer dhcpServer;
+
+    @Autowired
+    private DhcpEngine dhcpEngine;
+
+    @Autowired
     private StandardIp4AddressPool dhcpAddressPool;
+
+    @Autowired
+    private Executor executor;
+
+    @PostConstruct
+    public void init() throws IOException {
+        dhcpServer.start();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dhcpServer.run();
+            }
+        });
+    }
+
+    @PreDestroy
+    public void destroy() throws IOException {
+        dhcpServer.stop();
+    }
 
     @RequestMapping
     public String dhcp() {

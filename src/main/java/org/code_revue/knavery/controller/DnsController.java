@@ -1,9 +1,19 @@
 package org.code_revue.knavery.controller;
 
+import org.code_revue.dns.server.DnsServer;
+import org.code_revue.dns.server.connector.DatagramConnector;
+import org.code_revue.dns.server.engine.ResolverChain;
+import org.code_revue.dns.server.engine.StandardEngine;
+import org.code_revue.dns.server.resolver.DnsResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.IOException;
 
 /**
  * @author Mike Fanning
@@ -13,6 +23,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DnsController {
 
     private static final Logger logger = LoggerFactory.getLogger(DnsController.class);
+
+    @Autowired
+    private DnsServer dnsServer;
+
+    @Autowired
+    private DatagramConnector dnsConnector;
+
+    @Autowired
+    private StandardEngine dnsEngine;
+
+    @Autowired
+    private DnsResolver dnsResolver;
+
+    @Autowired
+    private ResolverChain resolverChain;
+
+    @PostConstruct
+    public void init() throws IOException {
+        dnsEngine.start();
+        dnsConnector.start();
+        dnsServer.start();
+    }
+
+    @PreDestroy
+    public void destroy() throws IOException {
+        dnsServer.stop();
+        dnsConnector.stop();
+        dnsEngine.stop();
+    }
 
     @RequestMapping
     public String dns() {

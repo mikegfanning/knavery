@@ -40,13 +40,8 @@ public class DhcpController {
 
     @PostConstruct
     public void init() throws IOException {
+        dhcpServer.setExecutor(executor);
         dhcpServer.start();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dhcpServer.run();
-            }
-        });
     }
 
     @PreDestroy

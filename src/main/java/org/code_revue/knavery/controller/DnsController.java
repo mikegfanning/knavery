@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.util.concurrent.Executor;
 
 /**
  * @author Mike Fanning
@@ -39,8 +40,12 @@ public class DnsController {
     @Autowired
     private ResolverChain resolverChain;
 
+    @Autowired
+    private Executor executor;
+
     @PostConstruct
     public void init() throws IOException {
+        dnsServer.setExecutor(executor);
         dnsEngine.start();
         dnsConnector.start();
         dnsServer.start();

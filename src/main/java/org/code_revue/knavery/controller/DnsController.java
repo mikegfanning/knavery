@@ -3,17 +3,16 @@ package org.code_revue.knavery.controller;
 import org.code_revue.dns.server.DnsServer;
 import org.code_revue.dns.server.connector.DatagramConnector;
 import org.code_revue.dns.server.connector.DnsConnector;
-import org.code_revue.dns.server.engine.AddressRegexResolverRule;
-import org.code_revue.dns.server.engine.QuestionNameResolverRule;
-import org.code_revue.dns.server.engine.ResolverChain;
-import org.code_revue.dns.server.engine.StandardEngine;
+import org.code_revue.dns.server.engine.*;
 import org.code_revue.dns.server.resolver.DnsResolver;
+import org.code_revue.dns.server.resolver.NullResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
@@ -41,7 +40,7 @@ public class DnsController {
     private StandardEngine dnsEngine;
 
     @Autowired
-    private DnsResolver dnsResolver;
+    private DnsResolver localhostResolver;
 
     @Autowired
     private ResolverChain resolverChain;
@@ -83,6 +82,18 @@ public class DnsController {
     public String dnsResolverChain(Model model) {
         model.addAttribute("resolverChain", resolverChain);
         return "dns-resolver-chain";
+    }
+
+    @RequestMapping(value = "/resolver-chain/add", method = RequestMethod.POST)
+    public String addAddressRegexResolverRule(@RequestParam String regex, @RequestParam String type, Model model) {
+        DnsResolver resolver;
+        if ("localhost".equals(type)) {
+            resolver = localhostResolver;
+        } else {
+            resolver = new NullResolver();
+        }
+        resolverChain.addRule(new AddressRegexResolverRule(regex, resolver));
+        return dnsResolverChain(model);
     }
 
     @RequestMapping("/resolver-chain/remove")

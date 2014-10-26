@@ -54,10 +54,32 @@
                 </div>
             </div>
         </c:forEach>
+        <div class="row">
+            <c:url value="/admin/dns/resolver-chain/add" var="addUrl"/>
+            <form id="add-form" action="${addUrl}" method="post">
+                <div class="col-md-3">AddressRegexResolverRule</div>
+                <div class="col-md-4">
+                    <input class="form-control" type="text" name="regex" placeholder="Regex"/>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-control" name="type">
+                        <option value="localhost">Localhost</option>
+                        <option value="null">Null</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <span id="add-button" class="add-button glyphicon glyphicon-plus-sign"/>
+                </div>
+            </form>
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="jsInclude">
         <script type="text/javascript">
+            $('#add-button').click(function() {
+                $('#add-form').submit();
+            });
+
             $('.remove-button').click(function(e) {
                 $('#remove-form-' + e.target.id.substr(14)).submit();
             })

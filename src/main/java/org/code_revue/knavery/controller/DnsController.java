@@ -96,8 +96,14 @@ public class DnsController {
         return dnsResolverChain(model);
     }
 
-    @RequestMapping("/resolver-chain/remove")
-    public String removeResolverChainEntry(Integer index, Model model) {
+    @RequestMapping(value = "/resolver-chain/move", method = RequestMethod.POST)
+    public String moveResolverRule(@RequestParam Integer index, @RequestParam Boolean direction, Model model) {
+        resolverChain.moveRule(index, direction);
+        return dnsResolverChain(model);
+    }
+
+    @RequestMapping(value = "/resolver-chain/remove", method = RequestMethod.POST)
+    public String removeResolverChainEntry(@RequestParam Integer index, Model model) {
         resolverChain.removeRule(index);
         return dnsResolverChain(model);
     }

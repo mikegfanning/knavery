@@ -2,6 +2,10 @@
     padding-top: 0.12em
 }
 
-.add-button, .remove-button {
+.move-button {
+    padding-right: 0.25em
+}
+
+.add-button, .move-button, .remove-button {
     font-size:24px;
 }

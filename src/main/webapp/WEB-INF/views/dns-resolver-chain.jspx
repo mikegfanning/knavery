@@ -16,6 +16,14 @@
         <h1 class="page-header">DNS Resolver Chain</h1>
         <c:forEach items="${resolverChain.resolverRules}" var="rule" varStatus="rStatus">
             <div class="row">
+                <div class="col-md-1">
+                    <span id="up-${rStatus.index}" class="move-button glyphicon glyphicon-circle-arrow-up">
+                        <!-- jspx rolleyes -->
+                    </span>
+                    <span id="down-${rStatus.index}" class="move-button glyphicon glyphicon-circle-arrow-down">
+                        <!-- jspx rolleyes -->
+                    </span>
+                </div>
                 <div class="col-md-3">${rule['class'].simpleName}</div>
                 <div class="col-md-4">
                     <c:choose>
@@ -32,7 +40,7 @@
                     </c:choose>
                 </div>
                 <c:set value="${rule.resolver}" var="resolver"/>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     ${resolver['class'].simpleName}
                     <c:choose>
                         <c:when test="${resolver['class'].simpleName eq 'LocalhostResolver'}">
@@ -57,11 +65,12 @@
         <div class="row">
             <c:url value="/admin/dns/resolver-chain/add" var="addUrl"/>
             <form id="add-form" action="${addUrl}" method="post">
+                <div class="col-md-1"><!-- thanks jspx your the best --></div>
                 <div class="col-md-3">AddressRegexResolverRule</div>
                 <div class="col-md-4">
                     <input class="form-control" type="text" name="regex" placeholder="Regex"/>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <select class="form-control" name="type">
                         <option value="localhost">Localhost</option>
                         <option value="null">Null</option>
@@ -72,6 +81,11 @@
                 </div>
             </form>
         </div>
+        <c:url value="/admin/dns/resolver-chain/move" var="moveUrl"/>
+        <form id="move-form" action="${moveUrl}" method="post">
+            <input id="move-index" type="hidden" name="index"/>
+            <input id="move-direction" type="hidden" name="direction"/>
+        </form>
     </jsp:attribute>
 
     <jsp:attribute name="jsInclude">
@@ -79,6 +93,14 @@
             $('#add-button').click(function() {
                 $('#add-form').submit();
             });
+
+            $('.move-button').click(function (e) {
+                var str = e.target.id.split('-');
+                $('#move-index').val(str[1]);
+                var direction = str[0] == 'up' ? 'true' : 'false';
+                $('#move-direction').val(direction);
+                $('#move-form').submit();
+            })
 
             $('.remove-button').click(function(e) {
                 $('#remove-form-' + e.target.id.substr(14)).submit();

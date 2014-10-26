@@ -13,6 +13,25 @@
 <t:adminBody sidebarItem="dns">
     <jsp:attribute name="body">
         <h1 class="page-header">DNS Connectors</h1>
+        <c:forEach items="${connectors}" var="connector" varStatus="cStatus">
+            <h3>Connector ${cStatus.count}</h3>
+            <div class="row">
+                <div class="col-md-3">Port</div>
+                <div class="col-md-9">${connector.port}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Receive Count</div>
+                <div class="col-md-9">${connector.receiveCount}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Send Count</div>
+                <div class="col-md-9">${connector.sendCount}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">Running</div>
+                <div class="col-md-9">${connector.running}</div>
+            </div>
+        </c:forEach>
     </jsp:attribute>
 </t:adminBody>
 

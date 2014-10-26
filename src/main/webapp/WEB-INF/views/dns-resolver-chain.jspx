@@ -11,11 +11,12 @@
 <t:defaultHead/>
 
 <t:adminBody sidebarItem="dns">
+
     <jsp:attribute name="body">
         <h1 class="page-header">DNS Resolver Chain</h1>
         <c:forEach items="${resolverChain.resolverRules}" var="rule" varStatus="rStatus">
             <div class="row">
-                <div class="col-md-4">${rule['class'].simpleName}</div>
+                <div class="col-md-3">${rule['class'].simpleName}</div>
                 <div class="col-md-4">
                     <c:choose>
                         <c:when test="${rule['class'].simpleName eq 'AddressRegexResolverRule'}">
@@ -43,9 +44,26 @@
                         </c:when>
                     </c:choose>
                 </div>
+                <div class="col-md-1">
+                    <c:url value="/admin/dns/resolver-chain/remove" var="removeUrl"/>
+                    <form id="remove-form-${rStatus.index}" action="${removeUrl}" method="post">
+                        <input type="hidden" name="index" value="${rStatus.index}"/>
+                    </form>
+                    <span id="remove-button-${rStatus.index}"
+                          class="remove-button glyphicon glyphicon-remove-sign"/>
+                </div>
             </div>
         </c:forEach>
     </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <script type="text/javascript">
+            $('.remove-button').click(function(e) {
+                $('#remove-form-' + e.target.id.substr(14)).submit();
+            })
+        </script>
+    </jsp:attribute>
+
 </t:adminBody>
 
 </html>

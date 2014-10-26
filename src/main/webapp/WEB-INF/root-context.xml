@@ -16,6 +16,7 @@
             </list>
         </property>
         <property name="engine" ref="dnsEngine"/>
+        <property name="executor" ref="executor"/>
     </bean>
 
     <bean id="dnsConnector" class="org.code_revue.dns.server.connector.DatagramConnector">
@@ -55,6 +56,7 @@
     <bean id="dhcpServer" class="org.code_revue.dhcp.server.DhcpServer">
         <property name="engine" ref="dhcpEngine"/>
         <property name="port" value="67"/>
+        <property name="executor" ref="executor"/>
     </bean>
 
     <bean id="dhcpEngine" class="org.code_revue.dhcp.server.StandardEngine">

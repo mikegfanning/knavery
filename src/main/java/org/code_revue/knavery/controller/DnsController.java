@@ -2,6 +2,7 @@ package org.code_revue.knavery.controller;
 
 import org.code_revue.dns.server.DnsServer;
 import org.code_revue.dns.server.connector.DatagramConnector;
+import org.code_revue.dns.server.connector.DnsConnector;
 import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.StandardEngine;
 import org.code_revue.dns.server.resolver.DnsResolver;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -47,7 +49,6 @@ public class DnsController {
 
     @PostConstruct
     public void init() throws IOException {
-        dnsServer.setExecutor(executor);
         dnsEngine.start();
         dnsConnector.start();
         dnsServer.start();

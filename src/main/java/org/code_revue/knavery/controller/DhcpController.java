@@ -40,7 +40,6 @@ public class DhcpController {
 
     @PostConstruct
     public void init() throws IOException {
-        dhcpServer.setExecutor(executor);
         dhcpServer.start();
     }
 

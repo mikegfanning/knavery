@@ -18,10 +18,10 @@
                 <div class="col-md-4">${rule['class'].simpleName}</div>
                 <div class="col-md-4">
                     <c:choose>
-                        <c:when test="${rule['class'].simpleName == 'AddressRegexResolverRule'}">
+                        <c:when test="${rule['class'].simpleName eq 'AddressRegexResolverRule'}">
                             <c:out value="${rule.regex}"/>
                         </c:when>
-                        <c:when test="${rule['class'].simpleName == 'QuestionNameResolverRule'}">
+                        <c:when test="${rule['class'].simpleName eq 'QuestionNameResolverRule'}">
                             <ul class="list-unstyled">
                                 <c:forEach items="${rule.domainIterator}" var="domain" varStatus="dStatus">
                                     <li>${domain}</li>
@@ -30,7 +30,19 @@
                         </c:when>
                     </c:choose>
                 </div>
-                <div class="col-md-4">${rule.resolver['class'].simpleName}</div>
+                <c:set value="${rule.resolver}" var="resolver"/>
+                <div class="col-md-4">
+                    ${resolver['class'].simpleName}
+                    <c:choose>
+                        <c:when test="${resolver['class'].simpleName eq 'LocalhostResolver'}">
+                            <ul>
+                                <c:forEach items="${resolver.exceptionList}" var="exception" varStatus="eStatus">
+                                    <li>${exception}</li>
+                                </c:forEach>
+                            </ul>
+                        </c:when>
+                    </c:choose>
+                </div>
             </div>
         </c:forEach>
     </jsp:attribute>

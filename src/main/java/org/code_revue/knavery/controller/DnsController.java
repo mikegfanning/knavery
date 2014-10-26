@@ -3,6 +3,7 @@ package org.code_revue.knavery.controller;
 import org.code_revue.dns.server.DnsServer;
 import org.code_revue.dns.server.connector.DatagramConnector;
 import org.code_revue.dns.server.connector.DnsConnector;
+import org.code_revue.dns.server.engine.QuestionNameResolverRule;
 import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.StandardEngine;
 import org.code_revue.dns.server.resolver.DnsResolver;
@@ -78,9 +79,9 @@ public class DnsController {
     }
 
     @RequestMapping("/resolver-chain")
-    public String dnsResolverChain() {
+    public String dnsResolverChain(Model model) {
+        model.addAttribute("resolverChain", resolverChain);
         return "dns-resolver-chain";
     }
-
 
 }

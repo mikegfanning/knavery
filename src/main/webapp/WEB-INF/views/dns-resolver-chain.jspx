@@ -13,6 +13,26 @@
 <t:adminBody sidebarItem="dns">
     <jsp:attribute name="body">
         <h1 class="page-header">DNS Resolver Chain</h1>
+        <c:forEach items="${resolverChain.resolverRules}" var="rule" varStatus="rStatus">
+            <div class="row">
+                <div class="col-md-4">${rule['class'].simpleName}</div>
+                <div class="col-md-4">
+                    <c:choose>
+                        <c:when test="${rule['class'].simpleName == 'AddressRegexResolverRule'}">
+                            <c:out value="${rule.regex}"/>
+                        </c:when>
+                        <c:when test="${rule['class'].simpleName == 'QuestionNameResolverRule'}">
+                            <ul class="list-unstyled">
+                                <c:forEach items="${rule.domainIterator}" var="domain" varStatus="dStatus">
+                                    <li>${domain}</li>
+                                </c:forEach>
+                            </ul>
+                        </c:when>
+                    </c:choose>
+                </div>
+                <div class="col-md-4">${rule.resolver['class'].simpleName}</div>
+            </div>
+        </c:forEach>
     </jsp:attribute>
 </t:adminBody>
 

@@ -44,10 +44,7 @@ public class DnsController {
 
     @Autowired
     private ResolverChain resolverChain;
-
-    @Autowired
-    private Executor executor;
-
+    
     @PostConstruct
     public void init() throws IOException {
         dnsEngine.start();

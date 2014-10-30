@@ -2,6 +2,7 @@ package org.code_revue.knavery.controller;
 
 import org.code_revue.dhcp.server.DhcpEngine;
 import org.code_revue.dhcp.server.DhcpServer;
+import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +31,10 @@ public class DhcpController {
     private DhcpServer dhcpServer;
 
     @Autowired
-    private DhcpEngine dhcpEngine;
+    private StandardEngine dhcpEngine;
 
     @Autowired
     private StandardIp4AddressPool dhcpAddressPool;
-
-    @Autowired
-    private Executor executor;
 
     @PostConstruct
     public void init() throws IOException {
@@ -80,7 +78,8 @@ public class DhcpController {
     }
 
     @RequestMapping("/engine")
-    public String dhcpEngine() {
+    public String dhcpEngine(Model model) {
+        model.addAttribute("engine", dhcpEngine);
         return "dhcp-engine";
     }
 

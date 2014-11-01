@@ -58,9 +58,13 @@ public class DhcpController {
     }
 
     @RequestMapping(value = "/address-pool/exclusion/add", method = RequestMethod.POST)
-    public String dhcpAddressPoolExclusionAdd(@RequestParam byte[] exclusion, Model model) {
+    public String dhcpAddressPoolExclusionAdd(@RequestParam int[] exclusion, Model model) {
         logger.debug("Adding DHCP address pool exclusion {}", exclusion);
-        dhcpAddressPool.addExclusion(exclusion);
+        byte[] temp = new byte[exclusion.length];
+        for (int i = 0; i < exclusion.length; i++) {
+            temp[i] = (byte) exclusion[i];
+        }
+        dhcpAddressPool.addExclusion(temp);
         return dhcpAddressPool(model);
     }
 

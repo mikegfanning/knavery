@@ -9,10 +9,35 @@
     <short-name>conversion</short-name>
     <uri>http://code_revue.org/conversion</uri>
 
+    <tag>
+        <name>byteArrayOut</name>
+        <tag-class>org.code_revue.knavery.tags.ByteArrayOutputTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>outputType</name>
+        </attribute>
+        <attribute>
+            <name>separator</name>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>pad</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+
     <function>
         <name>byteToUnsignedInt</name>
         <function-class>org.code_revue.knavery.tags.ByteArrayUtils</function-class>
         <function-signature>int byteToUnsignedInt(byte)</function-signature>
     </function>
+
+
 
 </taglib>

@@ -27,9 +27,6 @@
                     <div class="col-md-4"><k:byteArrayOut value="${configData}"/></div>
                     <div class="col-md-4">
                         <c:choose>
-                            <c:when test="${fn:length(configData) gt 4}">
-                                <input type="text" name="data" value="${k:byteArrayToString(configData)}"/>
-                            </c:when>
                             <c:when test="${fn:length(configData) eq 4 and configData[0] eq 0}">
                                 <input type="text" name="data" value="${k:byteArrayToInt(configData)}"/>
                             </c:when>
@@ -37,6 +34,13 @@
                                 <k:byteArrayOut value="${configData}" var="ip" separator="." outputType="dec" pad="false"/>
                                 <input type="text" name="data" value="${ip}"/>
                             </c:when>
+                            <c:when test="${fn:length(configData) eq 6}">
+                                <k:byteArrayOut value="${configData}" var="mac" separator=":"/>
+                                <input type="text" name="data" value="${mac}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="text" name="data" value="${k:byteArrayToString(configData)}"/>
+                            </c:otherwise>
                         </c:choose>
                     </div>
                     <div class="col-md-2">

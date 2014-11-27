@@ -1,9 +1,12 @@
 package org.code_revue.knavery.controller;
 
+import org.code_revue.dhcp.message.ByteArrayOption;
+import org.code_revue.dhcp.message.DhcpOptionType;
 import org.code_revue.dhcp.server.DhcpEngine;
 import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ import java.util.concurrent.Executor;
 public class DhcpController {
 
     private static final Logger logger = LoggerFactory.getLogger(DhcpController.class);
+
+    @Autowired
+    private StringConverterService stringConverterService;
 
     @Autowired
     private DhcpServer dhcpServer;
@@ -90,7 +96,7 @@ public class DhcpController {
     @RequestMapping("/engine/configuration/update")
     public String dhcpConfigurationUpdate(@RequestParam DhcpOptionType optionType, @RequestParam String data,
                                           Model model) {
-        dhcpEngine.setConfiguration(new ByteArrayOption(optionType, data.getBytes()));
+        dhcpEngine.setConfiguration(new ByteArrayOption(optionType, stringConverterService.convertToByteArray(data)));
         return dhcpEngine(model);
     }
 

@@ -13,10 +13,17 @@
         <name>byteArrayOut</name>
         <tag-class>org.code_revue.knavery.tags.ByteArrayOutputTag</tag-class>
         <body-content>empty</body-content>
+        <variable>
+            <name-given>var</name-given>
+            <scope>AT_END</scope>
+        </variable>
         <attribute>
             <name>value</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>var</name>
         </attribute>
         <attribute>
             <name>outputType</name>

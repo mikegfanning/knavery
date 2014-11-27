@@ -87,4 +87,11 @@ public class DhcpController {
         return "dhcp-engine";
     }
 
+    @RequestMapping("/engine/configuration/update")
+    public String dhcpConfigurationUpdate(@RequestParam DhcpOptionType optionType, @RequestParam String data,
+                                          Model model) {
+        dhcpEngine.setConfiguration(new ByteArrayOption(optionType, data.getBytes()));
+        return dhcpEngine(model);
+    }
+
 }

@@ -11,6 +11,8 @@ public class ByteArrayOutputTag extends SimpleTagSupport {
 
     private byte[] value;
 
+    private String var = null;
+
     private String outputType = "hex";
 
     private String separator = " ";
@@ -45,11 +47,19 @@ public class ByteArrayOutputTag extends SimpleTagSupport {
             }
         }
 
-        getJspContext().getOut().append(builder.toString());
+        if (null != var) {
+            getJspContext().setAttribute(var, builder.toString());
+        } else {
+            getJspContext().getOut().append(builder.toString());
+        }
     }
 
     public void setValue(byte[] value) {
         this.value = value;
+    }
+
+    public void setVar(String var) {
+        this.var = var;
     }
 
     public void setOutputType(String outputType) {

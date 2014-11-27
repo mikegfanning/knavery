@@ -1,5 +1,7 @@
 <html xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
       xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:k="http://code_revue.org/conversion"
       xmlns:t="urn:jsptagdir:/WEB-INF/tags">
 
 <jsp:output doctype-root-element="html"
@@ -13,6 +15,28 @@
 <t:adminBody sidebarItem="dhcp">
     <jsp:attribute name="body">
         <h1 class="page-header">DHCP Engine</h1>
+
+        <h3>Configuration</h3>
+        <c:forEach items="${engine.configuration}" var="config" varStatus="configStatus">
+            <c:set value="${config.value.optionData}" var="configData"/>
+            <div class="row">
+                <div class="col-md-2"><c:out value="${config.key}"/></div>
+                <div class="col-md-4"><k:byteArrayOut value="${configData}"/></div>
+                <div class="col-md-4">
+                    <c:choose>
+                        <c:when test="${fn:length(configData) gt 4}">
+                            <c:out value="${k:byteArrayToString(configData)}"/>
+                        </c:when>
+                        <c:when test="${fn:length(configData) eq 4 and configData[0] eq 0}">
+                            <c:out value="${k:byteArrayToInt(configData)}"/>
+                        </c:when>
+                        <c:when test="${fn:length(configData) eq 4}">
+                            <k:byteArrayOut value="${configData}" separator="." outputType="dec" pad="false"/>
+                        </c:when>
+                    </c:choose>
+                </div>
+            </div>
+        </c:forEach>
     </jsp:attribute>
 </t:adminBody>
 

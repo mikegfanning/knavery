@@ -33,6 +33,24 @@
     </tag>
 
     <function>
+        <name>byteArrayToInt</name>
+        <function-class>org.code_revue.knavery.tags.ByteArrayUtils</function-class>
+        <function-signature>int byteArrayToInt(byte[])</function-signature>
+    </function>
+
+    <function>
+        <name>byteArrayToString</name>
+        <function-class>org.code_revue.knavery.tags.ByteArrayUtils</function-class>
+        <function-signature>java.lang.String byteArrayToString(byte[])</function-signature>
+    </function>
+
+    <function>
+        <name>byteArrayToCharset</name>
+        <function-class>org.code_revue.knavery.tags.ByteArrayUtils</function-class>
+        <function-signature>java.lang.String byteArrayToString(byte[],java.lang.String)</function-signature>
+    </function>
+
+    <function>
         <name>byteToUnsignedInt</name>
         <function-class>java.lang.Byte</function-class>
         <function-signature>int toUnsignedInt(byte)</function-signature>

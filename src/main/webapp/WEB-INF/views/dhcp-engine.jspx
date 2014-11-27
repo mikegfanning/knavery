@@ -28,18 +28,18 @@
                     <div class="col-md-4">
                         <c:choose>
                             <c:when test="${fn:length(configData) eq 4 and configData[0] eq 0}">
-                                <input type="text" name="data" value="${k:byteArrayToInt(configData)}"/>
+                                <input class="form-control" type="text" name="data" value="${k:byteArrayToInt(configData)}"/>
                             </c:when>
                             <c:when test="${fn:length(configData) eq 4}">
                                 <k:byteArrayOut value="${configData}" var="ip" separator="." outputType="dec" pad="false"/>
-                                <input type="text" name="data" value="${ip}"/>
+                                <input class="form-control" type="text" name="data" value="${ip}"/>
                             </c:when>
                             <c:when test="${fn:length(configData) eq 6}">
                                 <k:byteArrayOut value="${configData}" var="mac" separator=":"/>
-                                <input type="text" name="data" value="${mac}"/>
+                                <input class="form-control" type="text" name="data" value="${mac}"/>
                             </c:when>
                             <c:otherwise>
-                                <input type="text" name="data" value="${k:byteArrayToString(configData)}"/>
+                                <input class="form-control" type="text" name="data" value="${k:byteArrayToString(configData)}"/>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -49,6 +49,23 @@
                 </form>
             </div>
         </c:forEach>
+        <div class="row">
+            <form class="form-inline" role="form" action="${updateConfigUrl}" method="post">
+                <div class="col-md-3">
+                    <select id="add-config" class="form-control" name="optionType">
+                        <c:forEach items="${dhcpOptionTypes}" var="optionType" varStatus="optionStatus">
+                            <option><c:out value="${optionType}"/></option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <input class="form-control" type="text" name="data"/>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default">Add</button>
+                </div>
+            </form>
+        </div>
     </jsp:attribute>
 </t:adminBody>
 

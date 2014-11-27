@@ -90,6 +90,7 @@ public class DhcpController {
     @RequestMapping("/engine")
     public String dhcpEngine(Model model) {
         model.addAttribute("engine", dhcpEngine);
+        model.addAttribute("dhcpOptionTypes", DhcpOptionType.values());
         return "dhcp-engine";
     }
 

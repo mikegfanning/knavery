@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-md-3">
                     <select class="form-control" name="type">
-                        <option value="localhost">Localhost</option>
+                        <option value="single">Single Host</option>
                         <option value="null">Null</option>
                     </select>
                 </div>

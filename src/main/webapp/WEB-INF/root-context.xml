@@ -37,7 +37,7 @@
         <property name="resolverChain" ref="resolverChain"/>
     </bean>
 
-    <bean id="localhostResolver" class="org.code_revue.dns.server.resolver.SingleHostResolver">
+    <bean id="singleHostResolver" class="org.code_revue.dns.server.resolver.SingleHostResolver">
         <property name="exceptionList">
             <list>
                 <value>ytmnd.com</value>
@@ -50,11 +50,11 @@
             <list>
                 <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
                     <constructor-arg value=".*192\.168.*"/>
-                    <constructor-arg ref="localhostResolver"/>
+                    <constructor-arg ref="singleHostResolver"/>
                 </bean>
                 <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
                     <constructor-arg value=".*127\.0\.0\.1.*"/>
-                    <constructor-arg ref="localhostResolver"/>
+                    <constructor-arg ref="singleHostResolver"/>
                 </bean>
             </list>
         </property>

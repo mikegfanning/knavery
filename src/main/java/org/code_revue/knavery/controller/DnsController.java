@@ -40,7 +40,7 @@ public class DnsController {
     private StandardEngine dnsEngine;
 
     @Autowired
-    private DnsResolver localhostResolver;
+    private DnsResolver singleHostResolver;
 
     @Autowired
     private ResolverChain resolverChain;
@@ -84,8 +84,8 @@ public class DnsController {
     @RequestMapping(value = "/resolver-chain/add", method = RequestMethod.POST)
     public String addAddressRegexResolverRule(@RequestParam String regex, @RequestParam String type, Model model) {
         DnsResolver resolver;
-        if ("localhost".equals(type)) {
-            resolver = localhostResolver;
+        if ("single".equals(type)) {
+            resolver = singleHostResolver;
         } else {
             resolver = new NullResolver();
         }

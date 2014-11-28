@@ -2,10 +2,13 @@ package org.code_revue.knavery.controller;
 
 import org.code_revue.dns.server.DnsServer;
 import org.code_revue.dns.server.connector.DatagramConnector;
-import org.code_revue.dns.server.connector.DnsConnector;
-import org.code_revue.dns.server.engine.*;
+import org.code_revue.dns.server.engine.AddressRegexResolverRule;
+import org.code_revue.dns.server.engine.ResolverChain;
+import org.code_revue.dns.server.engine.StandardEngine;
 import org.code_revue.dns.server.resolver.DnsResolver;
 import org.code_revue.dns.server.resolver.NullResolver;
+import org.code_revue.dns.server.resolver.SingleHostResolver;
+import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.concurrent.Executor;
 
 /**
  * @author Mike Fanning
@@ -40,11 +42,14 @@ public class DnsController {
     private StandardEngine dnsEngine;
 
     @Autowired
-    private DnsResolver singleHostResolver;
+    private SingleHostResolver singleHostResolver;
 
     @Autowired
     private ResolverChain resolverChain;
-    
+
+    @Autowired
+    private StringConverterService stringConverterService;
+
     @PostConstruct
     public void init() throws IOException {
         dnsEngine.start();
@@ -71,7 +76,8 @@ public class DnsController {
     }
 
     @RequestMapping("/engine")
-    public String dnsEngine() {
+    public String dnsEngine(Model model) {
+        model.addAttribute("singleHostResolver", singleHostResolver);
         return "dns-engine";
     }
 
@@ -103,6 +109,15 @@ public class DnsController {
     public String removeResolverChainEntry(@RequestParam Integer index, Model model) {
         resolverChain.removeRule(index);
         return dnsResolverChain(model);
+    }
+
+    @RequestMapping(value = "/single-host-resolver/update", method = RequestMethod.POST)
+    public String updateSingleHostResolver(@RequestParam String hostIp, Model model) {
+        if (!stringConverterService.isIpAddress(hostIp)) {
+            throw new IllegalArgumentException("Invalid IP Address.");
+        }
+        singleHostResolver.setHostIp(stringConverterService.convertToByteArray(hostIp));
+        return dnsEngine(model);
     }
 
 }

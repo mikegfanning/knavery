@@ -37,7 +37,7 @@
         <property name="resolverChain" ref="resolverChain"/>
     </bean>
 
-    <bean id="localhostResolver" class="org.code_revue.dns.server.resolver.LocalhostResolver">
+    <bean id="localhostResolver" class="org.code_revue.dns.server.resolver.SingleHostResolver">
         <property name="exceptionList">
             <list>
                 <value>ytmnd.com</value>

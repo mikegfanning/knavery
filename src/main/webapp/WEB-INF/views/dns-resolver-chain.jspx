@@ -43,7 +43,7 @@
                 <div class="col-md-3">
                     ${resolver['class'].simpleName}
                     <c:choose>
-                        <c:when test="${resolver['class'].simpleName eq 'LocalhostResolver'}">
+                        <c:when test="${resolver['class'].simpleName eq 'SingleHostResolver'}">
                             <ul>
                                 <c:forEach items="${resolver.exceptionList}" var="exception" varStatus="eStatus">
                                     <li>${exception}</li>

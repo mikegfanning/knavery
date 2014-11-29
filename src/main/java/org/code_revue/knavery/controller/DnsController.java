@@ -111,6 +111,22 @@ public class DnsController {
         return dnsResolverChain(model);
     }
 
+    @RequestMapping(value = "/single-host-resolver/exception/add", method = RequestMethod.POST)
+    public String addResolverException(@RequestParam String exception, Model model) {
+        if (null == exception || "".equals(exception)) {
+            throw new IllegalArgumentException("Exception must not be blank.");
+        }
+
+        singleHostResolver.addException(exception);
+        return dnsEngine(model);
+    }
+
+    @RequestMapping(value = "/single-host-resolver/exception/remove", method = RequestMethod.POST)
+    public String removeResolverException(@RequestParam String exception, Model model) {
+        singleHostResolver.removeException(exception);
+        return dnsEngine(model);
+    }
+
     @RequestMapping(value = "/single-host-resolver/update", method = RequestMethod.POST)
     public String updateSingleHostResolver(@RequestParam String hostIp, Model model) {
         if (!stringConverterService.isIpAddress(hostIp)) {

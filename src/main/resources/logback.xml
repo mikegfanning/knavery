@@ -6,13 +6,9 @@
         </encoder>
     </appender>
 
-    <logger name="org.code_revue.dhcp" level="debug">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+    <logger name="org.code_revue.dhcp" level="debug"/>
 
-    <logger name="org.code_revue.dns" level="debug">
-        <appender-ref ref="STDOUT"/>
-    </logger>
+    <logger name="org.code_revue.dns" level="debug"/>
 
     <root level="info">
         <appender-ref ref="STDOUT"/>

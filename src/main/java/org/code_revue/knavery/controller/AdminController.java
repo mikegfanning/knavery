@@ -1,6 +1,7 @@
 package org.code_revue.knavery.controller;
 
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.code_revue.knavery.service.RedirectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-    @Resource(name = "redirectUrls")
-    private List<String> redirectUrls;
+    @Autowired
+    RedirectService redirectService;
 
     @RequestMapping
     public String overview() {
@@ -33,22 +34,21 @@ public class AdminController {
 
     @RequestMapping("/redirect")
     public String redirect(Model model) {
-        model.addAttribute("redirectUrls", Collections.unmodifiableList(redirectUrls));
+        model.addAttribute("redirectUrls", redirectService.getAllUrls());
         return "redirect";
     }
 
     @RequestMapping(value = "/redirect/add", method = RequestMethod.POST)
     public String addRedirect(@RequestParam String url, Model model) {
-        // TODO: Validate this URL
         logger.debug("Adding redirect URL {}", url);
-        redirectUrls.add(url);
+        redirectService.addRedirectUrl(url);
         return redirect(model);
     }
 
     @RequestMapping(value = "/redirect/remove", method = RequestMethod.POST)
     public String removeRedirect(@RequestParam String url, Model model) {
         logger.debug("Removing redirect URL {}", url);
-        redirectUrls.remove(url);
+        redirectService.removeRedirectUrl(url);
         return redirect(model);
     }
 

@@ -77,15 +77,12 @@
         <constructor-arg value="192.168.1.220"/>
     </bean>
 
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="packagesToScan" value="org.code_revue.knavery.domain"/>
+    </bean>
+
     <task:annotation-driven executor="executor"/>
     <task:executor id="executor" pool-size="5"/>
-
-    <util:list id="redirectUrls">
-        <value>http://hippohippo.ytmnd.com/</value>
-        <value>http://picard.ytmnd.com/</value>
-        <value>http://momspaghetti.ytmnd.com/</value>
-        <value>http://bogie-nights.ytmnd.com/</value>
-        <value>http://rickastleypwns.ytmnd.com/</value>
-    </util:list>
 
 </beans>

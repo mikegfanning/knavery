@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class RedirectService {
     private List<Redirect> redirects = new ArrayList<>();
 
     @PostConstruct
+    @Transactional(readOnly = true)
     public void init() {
         final Session session = sessionFactory.openSession();
         try {
@@ -35,18 +37,24 @@ public class RedirectService {
         }
     }
 
+    @Transactional
     public boolean addRedirectUrl(String url) {
         // TODO: Validate url
-        // TODO: Persistence
+        Session session = sessionFactory.getCurrentSession();
         Redirect redirect = new Redirect(url);
+        session.save(redirect);
         redirects.add(redirect);
         return true;
     }
 
+    @Transactional
     public boolean removeRedirectUrl(String url) {
-        // TODO: Persistence
+        boolean answer;
+        Session session = sessionFactory.getCurrentSession();
         Redirect redirect = new Redirect(url);
-        return redirects.remove(redirect);
+        session.delete(redirect);
+        answer = redirects.remove(redirect);
+        return answer;
     }
 
     public List<String> getAllUrls() {

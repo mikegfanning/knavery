@@ -4,8 +4,6 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:sqlite::resource:knavery.db</property>
-        <property name="connection.driver_class">org.sqlite.JDBC</property>
 
         <!-- Enable for debugging queries -->
         <property name="hibernate.show_sql">true</property>

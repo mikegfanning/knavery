@@ -52,6 +52,7 @@ public class DhcpService {
         for (ByteArrayDhcpOption option: options) {
             session.delete(option);
         }
+        dhcpEngine.removeConfiguration(optionType);
         return !options.isEmpty();
     }
 

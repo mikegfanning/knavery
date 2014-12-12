@@ -91,10 +91,16 @@ public class DhcpController {
         return "dhcp-engine";
     }
 
-    @RequestMapping("/engine/configuration/update")
+    @RequestMapping(value = "/engine/configuration/update", method = RequestMethod.POST)
     public String dhcpConfigurationUpdate(@RequestParam DhcpOptionType optionType, @RequestParam String data,
                                           Model model) {
         dhcpService.setDhcpConfigurationOption(optionType, stringConverterService.convertToByteArray(data));
+        return dhcpEngine(model);
+    }
+
+    @RequestMapping(value = "/engine/configuration/remove", method = RequestMethod.POST)
+    public String dhcpConfigurationRemove(@RequestParam DhcpOptionType optionType, Model model) {
+        dhcpService.removeDhcpConfigurationOption(optionType);
         return dhcpEngine(model);
     }
 

@@ -13,6 +13,7 @@
 <t:defaultHead/>
 
 <t:adminBody sidebarItem="dhcp">
+
     <jsp:attribute name="body">
         <h1 class="page-header">DHCP Engine</h1>
 
@@ -25,13 +26,15 @@
                     <input type="hidden" name="optionType" value="${config.key}"/>
                     <div class="col-md-2"><c:out value="${config.key}"/></div>
                     <div class="col-md-4"><k:byteArrayOut value="${configData}"/></div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <c:choose>
                             <c:when test="${fn:length(configData) eq 4 and configData[0] eq 0}">
-                                <input class="form-control" type="text" name="data" value="${k:byteArrayToInt(configData)}"/>
+                                <input class="form-control" type="text" name="data"
+                                       value="${k:byteArrayToInt(configData)}"/>
                             </c:when>
                             <c:when test="${fn:length(configData) eq 4}">
-                                <k:byteArrayOut value="${configData}" var="ip" separator="." outputType="dec" pad="false"/>
+                                <k:byteArrayOut value="${configData}" var="ip" separator="." outputType="dec"
+                                                pad="false"/>
                                 <input class="form-control" type="text" name="data" value="${ip}"/>
                             </c:when>
                             <c:when test="${fn:length(configData) eq 6}">
@@ -39,7 +42,8 @@
                                 <input class="form-control" type="text" name="data" value="${mac}"/>
                             </c:when>
                             <c:otherwise>
-                                <input class="form-control" type="text" name="data" value="${k:byteArrayToString(configData)}"/>
+                                <input class="form-control" type="text" name="data"
+                                       value="${k:byteArrayToString(configData)}"/>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -47,6 +51,14 @@
                         <button type="submit" class="btn btn-default">Update</button>
                     </div>
                 </form>
+                <div class="col-md-1">
+                    <c:url value="/admin/dhcp/engine/configuration/remove" var="removeUrl"/>
+                    <form id="remove-form-${configStatus.index}" action="${removeUrl}" method="post">
+                        <input type="hidden" name="optionType" value="${config.key}"/>
+                    </form>
+                        <span id="remove-button-${configStatus.index}"
+                              class="remove-button glyphicon glyphicon-remove-sign"/>
+                </div>
             </div>
         </c:forEach>
         <div class="row">
@@ -58,15 +70,25 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <input class="form-control" type="text" name="data"/>
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-default">Add</button>
                 </div>
+                <div class="col-md-1"/>
             </form>
         </div>
     </jsp:attribute>
+
+    <jsp:attribute name="jsInclude">
+        <script type="text/javascript">
+            $('.remove-button').click(function(e) {
+                $('#remove-form-' + e.target.id.substr(14)).submit();
+            })
+        </script>
+    </jsp:attribute>
+
 </t:adminBody>
 
 </html>

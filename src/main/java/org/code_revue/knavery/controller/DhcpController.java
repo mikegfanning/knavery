@@ -1,11 +1,9 @@
 package org.code_revue.knavery.controller;
 
-import org.code_revue.dhcp.message.ByteArrayOption;
 import org.code_revue.dhcp.message.DhcpOptionType;
-import org.code_revue.dhcp.server.DhcpEngine;
 import org.code_revue.dhcp.server.DhcpServer;
-import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.code_revue.knavery.service.DhcpService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.concurrent.Executor;
 
 /**
  * @author Mike Fanning
@@ -34,10 +31,10 @@ public class DhcpController {
     private StringConverterService stringConverterService;
 
     @Autowired
-    private DhcpServer dhcpServer;
+    private DhcpService dhcpService;
 
     @Autowired
-    private StandardEngine dhcpEngine;
+    private DhcpServer dhcpServer;
 
     @Autowired
     private StandardIp4AddressPool dhcpAddressPool;
@@ -89,7 +86,7 @@ public class DhcpController {
 
     @RequestMapping("/engine")
     public String dhcpEngine(Model model) {
-        model.addAttribute("engine", dhcpEngine);
+        model.addAttribute("engine", dhcpService.getDhcpEngine());
         model.addAttribute("dhcpOptionTypes", DhcpOptionType.values());
         return "dhcp-engine";
     }
@@ -97,7 +94,7 @@ public class DhcpController {
     @RequestMapping("/engine/configuration/update")
     public String dhcpConfigurationUpdate(@RequestParam DhcpOptionType optionType, @RequestParam String data,
                                           Model model) {
-        dhcpEngine.setConfiguration(new ByteArrayOption(optionType, stringConverterService.convertToByteArray(data)));
+        dhcpService.setDhcpConfigurationOption(optionType, stringConverterService.convertToByteArray(data));
         return dhcpEngine(model);
     }
 

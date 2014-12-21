@@ -4,6 +4,7 @@ import org.code_revue.dhcp.message.DhcpOption;
 import org.code_revue.dhcp.message.DhcpOptionType;
 import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.knavery.domain.ByteArrayDhcpOption;
+import org.code_revue.knavery.domain.KnaveryAddressPool;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,12 +27,47 @@ public class DhcpService {
     @Autowired
     private StandardEngine dhcpEngine;
 
+    private KnaveryAddressPool addressPool;
+
     @PostConstruct
     @Transactional(readOnly = true)
     public void init() {
         Session session = sessionFactory.openSession();
         List<DhcpOption> options = session.getNamedQuery("findAllOptions").list();
         dhcpEngine.setConfigurations(options);
+
+        List<KnaveryAddressPool> pools = session.getNamedQuery("findAllPools").list();
+        if (pools.isEmpty()) {
+            addressPool = new KnaveryAddressPool();
+        } else {
+            addressPool = pools.get(0);
+        }
+        dhcpEngine.setAddressPool(addressPool);
+    }
+
+    @Transactional
+    public void addAddressPoolExclusion(byte[] exclusion) {
+        assert null != exclusion;
+        addressPool.addExclusion(exclusion);
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(addressPool);
+    }
+
+    @Transactional
+    public void removeAddressPoolExclusion(byte[] exclusion) {
+        assert null != exclusion;
+        addressPool.removeExclusion(exclusion);
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(addressPool);
+    }
+
+    @Transactional
+    public void setAddressPoolRange(byte[] start, byte[] end) {
+        assert null != start && null != end;
+        addressPool.setStart(start);
+        addressPool.setEnd(end);
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(addressPool);
     }
 
     @Transactional
@@ -63,4 +99,5 @@ public class DhcpService {
     public void setDhcpEngine(StandardEngine dhcpEngine) {
         this.dhcpEngine = dhcpEngine;
     }
+
 }

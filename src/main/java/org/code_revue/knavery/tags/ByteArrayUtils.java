@@ -19,4 +19,12 @@ public class ByteArrayUtils {
         return new String(bytes, charsetName);
     }
 
+    public static byte[] intArrayToByteArray(int[] data) {
+        byte[] b = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            b[i] = (byte) data[i];
+        }
+        return b;
+    }
+
 }

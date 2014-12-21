@@ -5,6 +5,7 @@ import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
 import org.code_revue.knavery.service.DhcpService;
 import org.code_revue.knavery.service.StringConverterService;
+import org.code_revue.knavery.tags.ByteArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,6 @@ public class DhcpController {
     @Autowired
     private DhcpServer dhcpServer;
 
-    @Autowired
-    private StandardIp4AddressPool dhcpAddressPool;
-
     @PostConstruct
     public void init() throws IOException {
         dhcpServer.start();
@@ -56,31 +54,29 @@ public class DhcpController {
 
     @RequestMapping("/address-pool")
     public String dhcpAddressPool(Model model) {
-        model.addAttribute("addressPool", dhcpAddressPool);
+        model.addAttribute("addressPool", dhcpService.getDhcpEngine().getAddressPool());
         return "dhcp-address-pool";
     }
 
     @RequestMapping(value = "/address-pool/exclusion/add", method = RequestMethod.POST)
     public String dhcpAddressPoolExclusionAdd(@RequestParam int[] exclusion, Model model) {
         logger.debug("Adding DHCP address pool exclusion {}", exclusion);
-        byte[] temp = new byte[exclusion.length];
-        for (int i = 0; i < exclusion.length; i++) {
-            temp[i] = (byte) exclusion[i];
-        }
-        dhcpAddressPool.addExclusion(temp);
+        dhcpService.addAddressPoolExclusion(ByteArrayUtils.intArrayToByteArray(exclusion));
         return dhcpAddressPool(model);
     }
 
     @RequestMapping(value = "/address-pool/exclusion/remove", method = RequestMethod.POST)
-    public String dhcpAddressPoolExclusionRemove(@RequestParam byte[] exclusion, Model model) {
+    public String dhcpAddressPoolExclusionRemove(@RequestParam int[] exclusion, Model model) {
         logger.debug("Removing DHCP address pool exclusion {}", exclusion);
-        dhcpAddressPool.removeExclusion(exclusion);
+        dhcpService.removeAddressPoolExclusion(ByteArrayUtils.intArrayToByteArray(exclusion));
         return dhcpAddressPool(model);
     }
 
     @RequestMapping(value = "/address-pool/update", method = RequestMethod.POST)
-    public String dhcpAddressPoolUpdate(@RequestParam byte[] start, @RequestParam byte[] end, Model model) {
-        // TODO: Update start and end address - need to update DHCP library
+    public String dhcpAddressPoolUpdate(@RequestParam int[] start, @RequestParam int[] end, Model model) {
+        logger.debug("Modifying DHCP address pool range {} to {}", start, end);
+        dhcpService.setAddressPoolRange(ByteArrayUtils.intArrayToByteArray(start),
+                ByteArrayUtils.intArrayToByteArray(end));
         return dhcpAddressPool(model);
     }
 

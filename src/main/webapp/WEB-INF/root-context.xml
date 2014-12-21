@@ -68,14 +68,7 @@
         <property name="executor" ref="executor"/>
     </bean>
 
-    <bean id="dhcpEngine" class="org.code_revue.dhcp.server.StandardEngine">
-        <property name="addressPool" ref="dhcpAddressPool"/>
-    </bean>
-
-    <bean id="dhcpAddressPool" class="org.code_revue.dhcp.server.StandardIp4AddressPool">
-        <constructor-arg value="192.168.1.120"/>
-        <constructor-arg value="192.168.1.220"/>
-    </bean>
+    <bean id="dhcpEngine" class="org.code_revue.dhcp.server.StandardEngine"/>
 
     <!-- Hibernate/JPA/Sqlite Stuff -->
 

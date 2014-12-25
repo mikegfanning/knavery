@@ -1,6 +1,7 @@
 package org.code_revue.knavery.domain;
 
 import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.code_revue.knavery.tags.ByteArrayUtils;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,8 +13,7 @@ import java.util.Set;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "findAllPools", query = "select new org.code_revue.knavery.domain.KnaveryAddressPool(p.start, " +
-            "p.end) from KnaveryAddressPool p")
+    @NamedQuery(name = "findAllPools", query = "select p from KnaveryAddressPool p")
 })
 public class KnaveryAddressPool extends StandardIp4AddressPool {
 
@@ -49,17 +49,17 @@ public class KnaveryAddressPool extends StandardIp4AddressPool {
     }
 
     @ElementCollection(fetch = FetchType.EAGER)
-    public Set<byte[]> getExclusions() {
-        Set<byte[]> answer = new HashSet<>();
+    public Set<Integer> getExcludedAddresses() {
+        Set<Integer> answer = new HashSet<>();
         for (byte[] data: super.getExclusions()) {
-            answer.add(data);
+            answer.add(ByteArrayUtils.byteArrayToInt(data));
         }
         return answer;
     }
 
-    public void setExclusions(Set<byte[]> exclusions) {
-        for (byte[] e: exclusions) {
-            super.addExclusion(e);
+    public void setExcludedAddresses(Set<Integer> exclusions) {
+        for (int e: exclusions) {
+            super.addExclusion(ByteArrayUtils.intToByteArray(e));
         }
     }
 

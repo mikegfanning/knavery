@@ -1,10 +1,9 @@
 package org.code_revue.knavery.domain;
 
-import org.code_revue.dhcp.server.StandardIp4AddressPool;
+import org.code_revue.dhcp.server.BitSetAddressPool;
 import org.code_revue.knavery.tags.ByteArrayUtils;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "findAllPools", query = "select p from KnaveryAddressPool p")
 })
-public class KnaveryAddressPool extends StandardIp4AddressPool {
+public class KnaveryAddressPool extends BitSetAddressPool {
 
     private int poolId;
 

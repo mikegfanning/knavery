@@ -2,7 +2,6 @@ package org.code_revue.knavery.controller;
 
 import org.code_revue.dhcp.message.DhcpOptionType;
 import org.code_revue.dhcp.server.DhcpServer;
-import org.code_revue.dhcp.server.StandardIp4AddressPool;
 import org.code_revue.knavery.service.DhcpService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.code_revue.knavery.tags.ByteArrayUtils;

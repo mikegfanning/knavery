@@ -1,6 +1,5 @@
 package org.code_revue.knavery.controller;
 
-import org.code_revue.dhcp.server.StandardIp4AddressPool;
 import org.code_revue.knavery.service.RedirectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Mike Fanning

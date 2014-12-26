@@ -8,6 +8,7 @@ import org.code_revue.dns.server.engine.StandardEngine;
 import org.code_revue.dns.server.resolver.DnsResolver;
 import org.code_revue.dns.server.resolver.NullResolver;
 import org.code_revue.dns.server.resolver.SingleHostResolver;
+import org.code_revue.knavery.service.DnsService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,36 +34,10 @@ public class DnsController {
     private static final Logger logger = LoggerFactory.getLogger(DnsController.class);
 
     @Autowired
-    private DnsServer dnsServer;
-
-    @Autowired
-    private DatagramConnector dnsConnector;
-
-    @Autowired
-    private StandardEngine dnsEngine;
-
-    @Autowired
-    private SingleHostResolver singleHostResolver;
-
-    @Autowired
-    private ResolverChain resolverChain;
+    private DnsService dnsService;
 
     @Autowired
     private StringConverterService stringConverterService;
-
-    @PostConstruct
-    public void init() throws IOException {
-        dnsEngine.start();
-        dnsConnector.start();
-        dnsServer.start();
-    }
-
-    @PreDestroy
-    public void destroy() throws IOException {
-        dnsServer.stop();
-        dnsConnector.stop();
-        dnsEngine.stop();
-    }
 
     @RequestMapping
     public String dns() {
@@ -71,43 +46,41 @@ public class DnsController {
 
     @RequestMapping("/connectors")
     public String dnsConnectors(Model model) {
-        model.addAttribute("connectors", Collections.singletonList(dnsConnector));
+        model.addAttribute("connectors", Collections.singletonList(dnsService.getDnsConnector()));
         return "dns-connectors";
     }
 
     @RequestMapping("/engine")
     public String dnsEngine(Model model) {
-        model.addAttribute("singleHostResolver", singleHostResolver);
+        model.addAttribute("singleHostResolver", dnsService.getSingleHostResolver());
         return "dns-engine";
     }
 
     @RequestMapping("/resolver-chain")
     public String dnsResolverChain(Model model) {
-        model.addAttribute("resolverChain", resolverChain);
+        model.addAttribute("resolverChain", dnsService.getResolverChain());
         return "dns-resolver-chain";
     }
 
     @RequestMapping(value = "/resolver-chain/add", method = RequestMethod.POST)
     public String addAddressRegexResolverRule(@RequestParam String regex, @RequestParam String type, Model model) {
-        DnsResolver resolver;
         if ("single".equals(type)) {
-            resolver = singleHostResolver;
+            dnsService.addResolverChainRule(regex);
         } else {
-            resolver = new NullResolver();
+            dnsService.addResolverChainRule(regex, new NullResolver());
         }
-        resolverChain.addRule(new AddressRegexResolverRule(regex, resolver));
         return dnsResolverChain(model);
     }
 
     @RequestMapping(value = "/resolver-chain/move", method = RequestMethod.POST)
     public String moveResolverRule(@RequestParam Integer index, @RequestParam Boolean direction, Model model) {
-        resolverChain.moveRule(index, direction);
+        dnsService.moveResolverChainRule(index, direction);
         return dnsResolverChain(model);
     }
 
     @RequestMapping(value = "/resolver-chain/remove", method = RequestMethod.POST)
     public String removeResolverChainEntry(@RequestParam Integer index, Model model) {
-        resolverChain.removeRule(index);
+        dnsService.removeResolverChainRule(index);
         return dnsResolverChain(model);
     }
 
@@ -117,13 +90,13 @@ public class DnsController {
             throw new IllegalArgumentException("Exception must not be blank.");
         }
 
-        singleHostResolver.addException(exception);
+        dnsService.addResolverException(exception);
         return dnsEngine(model);
     }
 
     @RequestMapping(value = "/single-host-resolver/exception/remove", method = RequestMethod.POST)
     public String removeResolverException(@RequestParam String exception, Model model) {
-        singleHostResolver.removeException(exception);
+        dnsService.removeResolverException(exception);
         return dnsEngine(model);
     }
 
@@ -132,7 +105,7 @@ public class DnsController {
         if (!stringConverterService.isIpAddress(hostIp)) {
             throw new IllegalArgumentException("Invalid IP Address.");
         }
-        singleHostResolver.setHostIp(stringConverterService.convertToByteArray(hostIp));
+        dnsService.setSingleHostResolverIp(stringConverterService.convertToByteArray(hostIp));
         return dnsEngine(model);
     }
 

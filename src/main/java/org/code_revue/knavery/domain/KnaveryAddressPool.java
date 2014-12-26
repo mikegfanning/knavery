@@ -1,6 +1,6 @@
 package org.code_revue.knavery.domain;
 
-import org.code_revue.dhcp.server.BitSetAddressPool;
+import org.code_revue.dhcp.server.SetBasedAddressPool;
 import org.code_revue.knavery.tags.ByteArrayUtils;
 
 import javax.persistence.*;
@@ -14,17 +14,9 @@ import java.util.Set;
 @NamedQueries({
     @NamedQuery(name = "findAllPools", query = "select p from KnaveryAddressPool p")
 })
-public class KnaveryAddressPool extends BitSetAddressPool {
+public class KnaveryAddressPool extends SetBasedAddressPool {
 
     private int poolId;
-
-    public KnaveryAddressPool() {
-        super(new byte[]{0, 0, 0, 0}, new byte[]{0, 0, 0, 0});
-    }
-
-    public KnaveryAddressPool(byte[] start, byte[] end) {
-        super(start, end);
-    }
 
     @Id
     public int getPoolId() {

@@ -27,7 +27,7 @@
                 <div class="col-md-3">${rule['class'].simpleName}</div>
                 <div class="col-md-4">
                     <c:choose>
-                        <c:when test="${rule['class'].simpleName eq 'AddressRegexResolverRule'}">
+                        <c:when test="${rule['class'].simpleName eq 'RegexResolverRuleAdapter'}">
                             <c:out value="${rule.regex}"/>
                         </c:when>
                         <c:when test="${rule['class'].simpleName eq 'QuestionNameResolverRule'}">

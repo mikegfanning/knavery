@@ -67,6 +67,8 @@ public class DnsService {
             resolverChain = resolverChains.get(0);
         }
 
+        session.close();
+
         dnsEngine.setResolverChain(resolverChain);
 
         dnsEngine.start();

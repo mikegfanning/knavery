@@ -1,7 +1,6 @@
 package org.code_revue.knavery.controller;
 
 import org.code_revue.dhcp.message.DhcpOptionType;
-import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.knavery.service.DhcpService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.code_revue.knavery.tags.ByteArrayUtils;
@@ -13,10 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.io.IOException;
 
 /**
  * @author Mike Fanning
@@ -32,19 +27,6 @@ public class DhcpController {
 
     @Autowired
     private DhcpService dhcpService;
-
-    @Autowired
-    private DhcpServer dhcpServer;
-
-    @PostConstruct
-    public void init() throws IOException {
-        dhcpServer.start();
-    }
-
-    @PreDestroy
-    public void destroy() throws IOException {
-        dhcpServer.stop();
-    }
 
     @RequestMapping
     public String dhcp() {

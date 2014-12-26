@@ -34,30 +34,6 @@
 
     <bean id="dnsEngine" class="org.code_revue.dns.server.engine.StandardEngine">
         <constructor-arg value="208.67.222.222"/>
-        <property name="resolverChain" ref="resolverChain"/>
-    </bean>
-
-    <bean id="singleHostResolver" class="org.code_revue.dns.server.resolver.SingleHostResolver">
-        <property name="exceptionList">
-            <list>
-                <value>ytmnd.com</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="resolverChain" class="org.code_revue.dns.server.engine.ResolverChain">
-        <property name="resolverRules">
-            <list>
-                <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
-                    <constructor-arg value=".*192\.168.*"/>
-                    <constructor-arg ref="singleHostResolver"/>
-                </bean>
-                <bean class="org.code_revue.dns.server.engine.AddressRegexResolverRule">
-                    <constructor-arg value=".*127\.0\.0\.1.*"/>
-                    <constructor-arg ref="singleHostResolver"/>
-                </bean>
-            </list>
-        </property>
     </bean>
 
     <!-- DHCP Server Config -->

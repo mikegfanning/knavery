@@ -1,13 +1,6 @@
 package org.code_revue.knavery.controller;
 
-import org.code_revue.dns.server.DnsServer;
-import org.code_revue.dns.server.connector.DatagramConnector;
-import org.code_revue.dns.server.engine.AddressRegexResolverRule;
-import org.code_revue.dns.server.engine.ResolverChain;
-import org.code_revue.dns.server.engine.StandardEngine;
-import org.code_revue.dns.server.resolver.DnsResolver;
-import org.code_revue.dns.server.resolver.NullResolver;
-import org.code_revue.dns.server.resolver.SingleHostResolver;
+import org.code_revue.knavery.domain.NullResolverAdapter;
 import org.code_revue.knavery.service.DnsService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;
@@ -19,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -65,9 +55,9 @@ public class DnsController {
     @RequestMapping(value = "/resolver-chain/add", method = RequestMethod.POST)
     public String addAddressRegexResolverRule(@RequestParam String regex, @RequestParam String type, Model model) {
         if ("single".equals(type)) {
-            dnsService.addResolverChainRule(regex);
+            dnsService.addSingleHostResolver(regex);
         } else {
-            dnsService.addResolverChainRule(regex, new NullResolver());
+            dnsService.addNullHostResolver(regex);
         }
         return dnsResolverChain(model);
     }

@@ -7,13 +7,20 @@ import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.ResolverRule;
 import org.code_revue.dns.server.engine.StandardEngine;
 import org.code_revue.dns.server.resolver.DnsResolver;
-import org.code_revue.dns.server.resolver.SingleHostResolver;
+import org.code_revue.knavery.domain.NullResolverAdapter;
+import org.code_revue.knavery.domain.RegexResolverRuleAdapter;
+import org.code_revue.knavery.domain.ResolverChainAdapter;
+import org.code_revue.knavery.domain.SingleHostResolverAdapter;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Mike Fanning
@@ -27,12 +34,44 @@ public class DnsService {
 
     private StandardEngine dnsEngine;
 
-    private SingleHostResolver singleHostResolver;
+    private SingleHostResolverAdapter singleHostResolver;
+
+    private NullResolverAdapter nullResolver;
 
     private ResolverChain resolverChain;
 
+    // TODO: Move this persistence junk to DAO.
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @PostConstruct
+    @Transactional(readOnly = true)
     public void init() throws IOException {
+        Session session = sessionFactory.openSession();
+
+        List<SingleHostResolverAdapter> hostResolvers = session.getNamedQuery("findAllSingleHostResolvers").list();
+        if (hostResolvers.isEmpty()) {
+            singleHostResolver = new SingleHostResolverAdapter();
+        } else {
+            singleHostResolver = hostResolvers.get(0);
+        }
+
+        List<NullResolverAdapter> nullResolvers = session.getNamedQuery("findAllNullResolvers").list();
+        if (nullResolvers.isEmpty()) {
+            nullResolver = new NullResolverAdapter();
+        } else {
+            nullResolver = nullResolvers.get(0);
+        }
+
+        List<ResolverChainAdapter> resolverChains = session.getNamedQuery("findAllResolverChains").list();
+        if (resolverChains.isEmpty()) {
+            resolverChain = new ResolverChainAdapter();
+        } else {
+            resolverChain = resolverChains.get(0);
+        }
+
+        dnsEngine.setResolverChain(resolverChain);
+
         dnsEngine.start();
         dnsConnector.start();
         dnsServer.start();
@@ -45,36 +84,77 @@ public class DnsService {
         dnsEngine.stop();
     }
 
-    public ResolverChain addResolverChainRule(String regex) {
-        return addResolverChainRule(regex, singleHostResolver);
+    @Transactional
+    public ResolverChain addNullHostResolver(String regex) {
+        RegexResolverRuleAdapter rule = new RegexResolverRuleAdapter();
+        rule.setRegex(regex);
+        rule.setResolver(nullResolver);
+        resolverChain.addRule(rule);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(rule);
+        session.saveOrUpdate(resolverChain);
+
+        return resolverChain;
     }
 
-    public ResolverChain addResolverChainRule(String regex, DnsResolver resolver) {
-        return addResolverChainRule(new AddressRegexResolverRule(regex, resolver));
+    @Transactional
+    public ResolverChain addSingleHostResolver(String regex) {
+        RegexResolverRuleAdapter rule = new RegexResolverRuleAdapter();
+        rule.setRegex(regex);
+        rule.setResolver(singleHostResolver);
+        resolverChain.addRule(rule);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(rule);
+        session.saveOrUpdate(resolverChain);
+
+        return resolverChain;
     }
 
-    public ResolverChain addResolverChainRule(ResolverRule rule) {
-        return resolverChain.addRule(rule);
-    }
-
+    @Transactional
     public void moveResolverChainRule(int index, boolean direction) {
         resolverChain.moveRule(index, direction);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(resolverChain);
     }
 
+    @Transactional
     public ResolverRule removeResolverChainRule(int index) {
-        return resolverChain.removeRule(index);
+        ResolverRule rule = resolverChain.removeRule(index);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(resolverChain);
+
+        return rule;
     }
 
+    @Transactional
     public void addResolverException(String exception) {
+        assert null != exception;
         singleHostResolver.addException(exception);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(singleHostResolver);
     }
 
+    @Transactional
     public void removeResolverException(String exception) {
+        assert null != exception;
         singleHostResolver.removeException(exception);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(singleHostResolver);
     }
 
+    @Transactional
     public void setSingleHostResolverIp(byte[] address) {
+        assert null != address;
         singleHostResolver.setHostIp(address);
+
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(singleHostResolver);
     }
 
     public DnsServer getDnsServer() {
@@ -104,21 +184,11 @@ public class DnsService {
         this.dnsEngine = dnsEngine;
     }
 
-    public SingleHostResolver getSingleHostResolver() {
-        return singleHostResolver;
-    }
-
-    @Autowired
-    public void setSingleHostResolver(SingleHostResolver singleHostResolver) {
-        this.singleHostResolver = singleHostResolver;
-    }
-
     public ResolverChain getResolverChain() {
         return resolverChain;
     }
 
-    @Autowired
-    public void setResolverChain(ResolverChain resolverChain) {
-        this.resolverChain = resolverChain;
+    public SingleHostResolverAdapter getSingleHostResolver() {
+        return singleHostResolver;
     }
 }

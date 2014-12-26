@@ -24,14 +24,15 @@ import java.util.List;
 @Service
 public class DhcpService {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
     private DhcpServer dhcpServer;
 
     private StandardEngine dhcpEngine;
 
     private KnaveryAddressPool addressPool;
+
+    // TODO: Move this persistence junk to DAO.
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @PostConstruct
     @Transactional(readOnly = true)

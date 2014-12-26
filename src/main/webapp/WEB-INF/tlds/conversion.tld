@@ -59,8 +59,8 @@
 
     <function>
         <name>byteToUnsignedInt</name>
-        <function-class>java.lang.Byte</function-class>
-        <function-signature>int toUnsignedInt(byte)</function-signature>
+        <function-class>org.code_revue.knavery.tags.ByteArrayUtils</function-class>
+        <function-signature>int byteToUnsignedInt(byte)</function-signature>
     </function>
 
 </taglib>

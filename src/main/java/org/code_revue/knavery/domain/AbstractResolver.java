@@ -1,8 +1,10 @@
 package org.code_revue.knavery.domain;
 
 import org.code_revue.dns.server.resolver.DnsResolver;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * @author Mike Fanning
@@ -11,14 +13,16 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractResolver implements DnsResolver {
 
-    private int resolverId;
+    private String resolverId;
 
     @Id
-    public int getResolverId() {
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    public String getResolverId() {
         return resolverId;
     }
 
-    public void setResolverId(int resolverId) {
+    public void setResolverId(String resolverId) {
         this.resolverId = resolverId;
     }
 

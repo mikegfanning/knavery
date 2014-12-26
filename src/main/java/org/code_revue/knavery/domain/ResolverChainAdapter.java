@@ -2,6 +2,7 @@ package org.code_revue.knavery.domain;
 
 import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.ResolverRule;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,31 +17,27 @@ import java.util.List;
 })
 public class ResolverChainAdapter extends ResolverChain {
 
-    private int chainId;
+    private String chainId;
 
     @Id
-    public int getChainId() {
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    public String getChainId() {
         return chainId;
     }
 
-    public void setChainId(int chainId) {
+    public void setChainId(String chainId) {
         this.chainId = chainId;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = RegexResolverRuleAdapter.class)
     @OrderColumn
-    public List<RegexResolverRuleAdapter> getRegexResolverRules() {
-        List<RegexResolverRuleAdapter> rules = new ArrayList<>();
-        for (ResolverRule r: super.getResolverRules()) {
-            rules.add((RegexResolverRuleAdapter) r);
-        }
-        return rules;
+    public List getRegexResolverRules() {
+        return super.getResolverRules();
     }
 
-    public void setRegexResolverRules(List<RegexResolverRuleAdapter> rules) {
-        for (RegexResolverRuleAdapter r: rules) {
-            super.addRule(r);
-        }
+    public void setRegexResolverRules(List rules) {
+        super.setResolverRules((List<ResolverRule>) rules);
     }
 
 }

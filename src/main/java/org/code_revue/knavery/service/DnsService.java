@@ -2,11 +2,9 @@ package org.code_revue.knavery.service;
 
 import org.code_revue.dns.server.DnsServer;
 import org.code_revue.dns.server.connector.DatagramConnector;
-import org.code_revue.dns.server.engine.AddressRegexResolverRule;
 import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.ResolverRule;
 import org.code_revue.dns.server.engine.StandardEngine;
-import org.code_revue.dns.server.resolver.DnsResolver;
 import org.code_revue.knavery.domain.NullResolverAdapter;
 import org.code_revue.knavery.domain.RegexResolverRuleAdapter;
 import org.code_revue.knavery.domain.ResolverChainAdapter;
@@ -45,7 +43,6 @@ public class DnsService {
     private SessionFactory sessionFactory;
 
     @PostConstruct
-    @Transactional(readOnly = true)
     public void init() throws IOException {
         Session session = sessionFactory.openSession();
 
@@ -92,6 +89,7 @@ public class DnsService {
         resolverChain.addRule(rule);
 
         Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(nullResolver);
         session.saveOrUpdate(rule);
         session.saveOrUpdate(resolverChain);
 
@@ -106,6 +104,7 @@ public class DnsService {
         resolverChain.addRule(rule);
 
         Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(singleHostResolver);
         session.saveOrUpdate(rule);
         session.saveOrUpdate(resolverChain);
 

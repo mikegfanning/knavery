@@ -1,8 +1,10 @@
 package org.code_revue.knavery.domain;
 
 import org.code_revue.dns.server.engine.AddressRegexResolverRule;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * @author Mike Fanning
@@ -10,18 +12,20 @@ import javax.persistence.*;
 @Entity
 public class RegexResolverRuleAdapter extends AddressRegexResolverRule {
 
-    private int ruleId;
+    private String ruleId;
 
     public RegexResolverRuleAdapter() {
         super("", null);
     }
 
     @Id
-    public int getRuleId() {
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    public String getRuleId() {
         return ruleId;
     }
 
-    public void setRuleId(int ruleId) {
+    public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
     }
 

@@ -4,7 +4,6 @@ import org.code_revue.dns.server.engine.AddressRegexResolverRule;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 /**
  * @author Mike Fanning

@@ -5,7 +5,6 @@ import org.code_revue.dns.server.engine.ResolverRule;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

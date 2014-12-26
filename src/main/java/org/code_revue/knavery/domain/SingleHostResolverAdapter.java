@@ -2,9 +2,7 @@ package org.code_revue.knavery.domain;
 
 import org.code_revue.dns.message.DnsQuestion;
 import org.code_revue.dns.message.DnsRecord;
-import org.code_revue.dns.server.engine.ResolverRule;
 import org.code_revue.dns.server.resolver.SingleHostResolver;
-import org.code_revue.knavery.tags.ByteArrayUtils;
 
 import javax.persistence.*;
 import java.net.UnknownHostException;

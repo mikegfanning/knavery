@@ -6,6 +6,7 @@ import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.knavery.persistence.ByteArrayDhcpOption;
 import org.code_revue.knavery.persistence.KnaveryAddressPool;
+import org.code_revue.knavery.persistence.dao.NetworkDeviceDao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,12 +35,16 @@ public class DhcpService {
     @Autowired
     private SessionFactory sessionFactory;
 
+    private NetworkDeviceDao networkDeviceDao;
+
     @PostConstruct
     @Transactional(readOnly = true)
     public void init() throws IOException {
         Session session = sessionFactory.openSession();
         List<DhcpOption> options = session.getNamedQuery("findAllOptions").list();
         dhcpEngine.setConfigurations(options);
+
+        dhcpEngine.setDeviceRegistry(networkDeviceDao);
 
         List<KnaveryAddressPool> pools = session.getNamedQuery("findAllPools").list();
         if (pools.isEmpty()) {
@@ -121,4 +126,12 @@ public class DhcpService {
         this.dhcpEngine = dhcpEngine;
     }
 
+    public NetworkDeviceDao getNetworkDeviceDao() {
+        return networkDeviceDao;
+    }
+
+    @Autowired
+    public void setNetworkDeviceDao(NetworkDeviceDao networkDeviceDao) {
+        this.networkDeviceDao = networkDeviceDao;
+    }
 }

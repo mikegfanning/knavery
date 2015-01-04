@@ -1,6 +1,7 @@
 package org.code_revue.knavery.tags;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 
 /**
  * @author Mike Fanning
@@ -9,6 +10,10 @@ public class ByteArrayUtils {
 
     public static int byteArrayToInt(byte[] bytes) {
         return bytes[3] & 0xFF | (bytes[2] & 0xFF) << 8 | (bytes[1] & 0xFF) << 16 | (bytes[0] & 0xFF) << 24;
+    }
+
+    public static String byteArrayToNumericString(byte[] bytes) {
+        return (new BigInteger(bytes)).toString();
     }
 
     public static String byteArrayToString(byte[] bytes) {
@@ -38,6 +43,10 @@ public class ByteArrayUtils {
                 (byte) ((i >> 8) & 0xff),
                 (byte) (i & 0xff)
         };
+    }
+
+    public static byte[] numericStringToByteArray(String number) {
+        return (new BigInteger(number)).toByteArray();
     }
 
 }

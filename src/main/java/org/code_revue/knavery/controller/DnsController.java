@@ -1,6 +1,5 @@
 package org.code_revue.knavery.controller;
 
-import org.code_revue.knavery.domain.NullResolverAdapter;
 import org.code_revue.knavery.service.DnsService;
 import org.code_revue.knavery.service.StringConverterService;
 import org.slf4j.Logger;

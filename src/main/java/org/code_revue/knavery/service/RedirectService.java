@@ -1,6 +1,6 @@
 package org.code_revue.knavery.service;
 
-import org.code_revue.knavery.domain.Redirect;
+import org.code_revue.knavery.persistence.Redirect;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

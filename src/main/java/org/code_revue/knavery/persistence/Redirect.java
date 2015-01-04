@@ -1,4 +1,4 @@
-package org.code_revue.knavery.domain;
+package org.code_revue.knavery.persistence;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

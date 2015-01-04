@@ -1,4 +1,4 @@
-package org.code_revue.knavery.domain;
+package org.code_revue.knavery.persistence;
 
 import org.code_revue.dns.server.engine.ResolverChain;
 import org.code_revue.dns.server.engine.ResolverRule;

@@ -1,12 +1,13 @@
 package org.code_revue.knavery.service;
 
+import org.code_revue.dhcp.device.DeviceRegistry;
+import org.code_revue.dhcp.device.NetworkDevice;
 import org.code_revue.dhcp.message.DhcpOption;
 import org.code_revue.dhcp.message.DhcpOptionType;
 import org.code_revue.dhcp.server.DhcpServer;
 import org.code_revue.dhcp.server.StandardEngine;
 import org.code_revue.knavery.persistence.ByteArrayDhcpOption;
 import org.code_revue.knavery.persistence.KnaveryAddressPool;
-import org.code_revue.knavery.persistence.dao.NetworkDeviceDao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ public class DhcpService {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private NetworkDeviceDao networkDeviceDao;
+    private DeviceRegistry deviceRegistry;
 
     @PostConstruct
     @Transactional(readOnly = true)
@@ -44,7 +46,7 @@ public class DhcpService {
         List<DhcpOption> options = session.getNamedQuery("findAllOptions").list();
         dhcpEngine.setConfigurations(options);
 
-        dhcpEngine.setDeviceRegistry(networkDeviceDao);
+        dhcpEngine.setDeviceRegistry(deviceRegistry);
 
         List<KnaveryAddressPool> pools = session.getNamedQuery("findAllPools").list();
         if (pools.isEmpty()) {
@@ -108,6 +110,10 @@ public class DhcpService {
         return !options.isEmpty();
     }
 
+    public Collection<NetworkDevice> getAllDevices() {
+        return deviceRegistry.getAllDevices();
+    }
+
     public DhcpServer getDhcpServer() {
         return dhcpServer;
     }
@@ -126,12 +132,12 @@ public class DhcpService {
         this.dhcpEngine = dhcpEngine;
     }
 
-    public NetworkDeviceDao getNetworkDeviceDao() {
-        return networkDeviceDao;
+    public DeviceRegistry getDeviceRegistry() {
+        return deviceRegistry;
     }
 
     @Autowired
-    public void setNetworkDeviceDao(NetworkDeviceDao networkDeviceDao) {
-        this.networkDeviceDao = networkDeviceDao;
+    public void setDeviceRegistry(DeviceRegistry deviceRegistry) {
+        this.deviceRegistry = deviceRegistry;
     }
 }

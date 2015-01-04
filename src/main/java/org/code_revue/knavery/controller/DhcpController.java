@@ -1,5 +1,6 @@
 package org.code_revue.knavery.controller;
 
+import org.code_revue.dhcp.device.NetworkDevice;
 import org.code_revue.dhcp.message.DhcpOptionType;
 import org.code_revue.knavery.service.DhcpService;
 import org.code_revue.knavery.service.StringConverterService;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Collection;
 
 /**
  * @author Mike Fanning
@@ -79,6 +82,15 @@ public class DhcpController {
     public String dhcpConfigurationRemove(@RequestParam DhcpOptionType optionType, Model model) {
         dhcpService.removeDhcpConfigurationOption(optionType);
         return dhcpEngine(model);
+    }
+
+    @RequestMapping(value = "/devices", method = RequestMethod.GET)
+    public String listDevices(Model model) {
+        Collection<NetworkDevice> devices = dhcpService.getAllDevices();
+        for (NetworkDevice d: devices) {
+            logger.info("{} {} {} {}", d.getHardwareAddress(), d.getIpAddress(), d.getStatus(), d.getLeaseExpiration());
+        }
+        return dhcp();
     }
 
 }

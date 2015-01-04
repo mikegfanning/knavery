@@ -28,7 +28,9 @@ public class NetworkDeviceAdapter extends NetworkDevice {
     }
 
     public void setDeviceId(String deviceId) {
-        setHardwareAddress(ByteArrayUtils.numericStringToByteArray(deviceId));
+        byte[] address = new byte[6];
+        ByteArrayUtils.numericStringToByteArray(deviceId, address);
+        setHardwareAddress(address);
     }
 
     @Override

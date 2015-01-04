@@ -45,8 +45,17 @@ public class ByteArrayUtils {
         };
     }
 
-    public static byte[] numericStringToByteArray(String number) {
-        return (new BigInteger(number)).toByteArray();
+    public static void numericStringToByteArray(String number, byte[] bytes) {
+        byte[] b = (new BigInteger(number)).toByteArray();
+        int lDiff = bytes.length - b.length;
+        for (int i = bytes.length - 1; i >= 0; i--) {
+            int bIndex = i - lDiff;
+            if (bIndex < 0) {
+                bytes[i] = 0;
+            } else {
+                bytes[i] = b[bIndex];
+            }
+        }
     }
 
 }

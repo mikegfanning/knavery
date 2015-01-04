@@ -10,7 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,12 +28,14 @@ public class NetworkDeviceDao implements DeviceRegistry {
     private SessionFactory sessionFactory;
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<NetworkDevice> getAllDevices() {
         Session session = sessionFactory.getCurrentSession();
         return session.getNamedQuery("findAllNetworkDevices").list();
     }
 
     @Override
+    @Transactional
     public NetworkDevice getDevice(byte[] hardwareAddress) {
         Session session = sessionFactory.getCurrentSession();
         Query q = session.getNamedQuery("findNetworkDevice");
@@ -50,6 +54,7 @@ public class NetworkDeviceDao implements DeviceRegistry {
     }
 
     @Override
+    @Transactional
     public NetworkDevice resetDevice(byte[] hardwareAddress) {
         Session session = sessionFactory.getCurrentSession();
         NetworkDevice device = getDevice(hardwareAddress);
@@ -59,6 +64,7 @@ public class NetworkDeviceDao implements DeviceRegistry {
     }
 
     @Override
+    @Transactional
     public NetworkDevice updateDevice(NetworkDevice networkDevice) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(networkDevice);
@@ -69,6 +75,7 @@ public class NetworkDeviceDao implements DeviceRegistry {
         return sessionFactory;
     }
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
